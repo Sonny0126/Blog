@@ -1,12 +1,68 @@
 <!DOCTYPE html>
-<meta charset="utf-8">
+<html lang="en">
 <head>
+    <meta charset="utf-8">
     <h1>
-        Son Seung Min Blod
+        SON
     </h1>
+
+    <link rel="stylesheet" href="index.css">
+
+    <!-- 배경화면 스타일 설정 -->
+    <style>
+        body {
+            margin: 0;
+            padding: 0;
+            background-image: url('https://e0.pxfuel.com/wallpapers/70/74/desktop-wallpaper-anime-one-piece-monochrome-back-white-background-arms-up-zoro-black.jpg');
+            background-repeat: no-repeat;
+            background-size: cover;
+            background-attachment: fixed;
+        }
+    </style>
+    
+
 </head>
 
 <body>
+    <!-- 리버풀 페이지 버튼 -->
+    <button id="button1">
+        <a>Liverpool</a>
+    </button>
+    <br>
+    <!-- 비트 플로우 페이지 버튼 -->
+    <button id="button2">
+        <a>Bitflow</a>
+    </button>
+    <br>
+    <!-- 노션 이동 버튼 -->
+    <button id="button3">
+        <a>Notion</a>
+    </button>
+    <br>
+    <!-- 네이버 블로그 이동 버튼 -->
+    <button id="button4">
+        <a>Naver-Blog</a>
+    </button>
+
+
+    <script>
+        document.getElementById('button1').addEventListener('click', function() {
+            window.location.href = 'https://sonny0126.github.io/Web/';
+        });
+        document.getElementById('button2').addEventListener('click', function() {
+            window.location.href = 'https://sonny0126.github.io/BitFlow/';
+        });
+        document.getElementById('button3').addEventListener('click', function(){
+            window.location.href = 'https://www.notion.so/Son-e53d58b3025f42d68700120ed5c20715';
+        });
+        document.getElementById('button4').addEventListener('click', function(){
+            window.location.href = 'https://blog.naver.com/chewypig';
+        });
+    </script>
+
+
+
+
 
 </body>
 </html>

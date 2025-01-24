@@ -1,0 +1,67 @@
+/* 전체 버튼 스타일 */
+button {
+    background-color: #4CAF50; /* 배경 색 */
+    border: none; /* 기본 버튼 테두리 제거 */
+    color: white; /* 글자 색 */
+    padding: 15px 32px; /* 버튼의 패딩 */
+    text-align: center; /* 텍스트 가운데 정렬 */
+    text-decoration: none; /* 링크의 밑줄 제거 */
+    display: inline-block; /* 버튼을 가로로 배치 */
+    font-size: 16px; /* 폰트 크기 */
+    margin: 10px; /* 버튼 간격 */
+    border-radius: 8px; /* 버튼 모서리 둥글게 */
+    cursor: pointer; /* 마우스 포인터를 손 모양으로 */
+    transition: background-color 0.3s, transform 0.3s; /* 마우스 호버 시 효과 */
+}
+
+h1{
+   margin-left: 20px; 
+}
+
+/* 버튼에 마우스 오버 시 배경색 변경 및 약간의 확대 효과 */
+button:hover {
+    background-color: #45a049; /* 마우스 오버 시 배경 색 */
+    transform: scale(1.05); /* 버튼 약간 확대 */
+}
+
+/* 버튼 내 a 링크 스타일 */
+button a {
+    color: white; /* 링크 색상 */
+    text-decoration: none; /* 링크의 밑줄 제거 */
+}
+
+/* 버튼의 첫 번째 버튼 (Liverpool) */
+#button1 {
+    background-color: #ff4d4d; /* Liverpool 버튼 색 */
+}
+
+#button1:hover {
+    background-color: #e60000; /* Liverpool 버튼 hover 색 */
+}
+
+/* 두 번째 버튼 (Bitflow) */
+#button2 {
+    background-color: #FEE12B; /* Bitflow 버튼 색 */
+}
+
+#button2:hover {
+    background-color: #FFF200; /* Bitflow 버튼 hover 색 */
+}
+
+/* 세 번째 버튼 (Notion) */
+#button3 {
+    background-color: #160D08; /* Notion 버튼 색 */
+}
+
+#button3:hover {
+    background-color: #000000; /* Notion 버튼 hover 색 */
+}
+
+/* 네 번째 버튼 */
+#button4 {
+    background-color: #4CBB17; /* Notion 버튼 색 */
+}
+
+#button4:hover {
+    background-color: #3BB143; /* Notion 버튼 hover 색 */
+}
