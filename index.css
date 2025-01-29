@@ -16,6 +16,7 @@ button {
 
 h1{
    margin-left: 20px; 
+   color: #0018F9;
 }
 
 /* 버튼에 마우스 오버 시 배경색 변경 및 약간의 확대 효과 */
@@ -50,11 +51,11 @@ button a {
 
 /* 세 번째 버튼 (Notion) */
 #button3 {
-    background-color: #160D08; /* Notion 버튼 색 */
+    background-color: #881699; /* Notion 버튼 색 */
 }
 
 #button3:hover {
-    background-color: #000000; /* Notion 버튼 hover 색 */
+    background-color: #4D0C83; /* Notion 버튼 hover 색 */
 }
 
 /* 네 번째 버튼 */
@@ -64,4 +65,20 @@ button a {
 
 #button4:hover {
     background-color: #3BB143; /* Notion 버튼 hover 색 */
+}
+
+.switch{
+    display: flex;
+    gap: 50px;
+    align-items: center; /* 수직 정렬 */
+    padding: 10px; 
+}
+
+/*밤 낮 변경 버튼 */
+#button5 {
+    background-color: #ffcc00; /* Notion 버튼 색 */
+}
+
+#button5:hover {
+    background-color: #ffcc00; /* Notion 버튼 hover 색 */
 }

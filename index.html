@@ -2,9 +2,7 @@
 <html lang="en">
 <head>
     <meta charset="utf-8">
-    <h1>
-        SON
-    </h1>
+
 
     <link rel="stylesheet" href="index.css">
 
@@ -13,17 +11,24 @@
         body {
             margin: 0;
             padding: 0;
-            background-image: url('https://newsroom.posco.com/kr/wp-content/uploads/2024/08/PC_3840x2160.jpg');
+            /* background-image: url(''); */
             background-repeat: no-repeat;
             background-size: cover; 
             background-attachment: fixed;
         }
     </style>
-    
 
 </head>
 
 <body>
+    <!-- 밤낮 조절 버튼 -->
+    <div class="switch">
+        <h1>SONNY</h1>
+        <button id="button5">
+            Day
+        </button> 
+    </div>    
+
     <!-- 리버풀 페이지 버튼 -->
     <button id="button1">
         <a>Liverpool</a>
@@ -44,8 +49,30 @@
         <a>Naver-Blog</a>
     </button>
 
-
     <script>
+
+        // 밤낮 조절 버튼
+        const daychangeButton = document.getElementById('button5');
+        daychangeButton.addEventListener('click', function(){
+            const body = document.body;
+            if (daychangeButton.textContent === 'Day') {
+                body.style.backgroundImage = 'none';
+                body.style.backgroundColor = 'black'; // 어두운 배경화면 
+                body.style.color = 'white';
+                daychangeButton.textContent = 'Night';
+                daychangeButton.style.backgroundColor = '#333';
+                daychangeButton.style.color = 'white';
+            } else {
+                body.style.backgroundImage = 'none';
+                body.style.backgroundColor = 'white'; // 밝은 배경화면
+                body.style.color = 'black';
+                daychangeButton.textContent = 'Day';
+                daychangeButton.style.backgroundColor = '#ffcc00';
+                daychangeButton.style.color = 'black';
+            }
+        });
+
+        //페이지 이동
         document.getElementById('button1').addEventListener('click', function() {
             window.location.href = 'https://sonny0126.github.io/Web/';
         });
@@ -59,9 +86,6 @@
             window.location.href = 'https://blog.naver.com/chewypig';
         });
     </script>
-
-
-
 
 
 </body>
