@@ -3,7 +3,6 @@
 <head>
     <meta charset="utf-8">
 
-
     <link rel="stylesheet" href="index.css">
 
     <!-- 배경화면 스타일 설정 -->
@@ -11,10 +10,11 @@
         body {
             margin: 0;
             padding: 0;
-            /* background-image: url(''); */
+            background-image: url('Day.png'); /* 기본 배경 */
             background-repeat: no-repeat;
             background-size: cover; 
             background-attachment: fixed;
+            transition: background-image 0.5s ease; /* 부드러운 전환 효과 */
         }
     </style>
 
@@ -22,71 +22,59 @@
 
 <body>
     <!-- 밤낮 조절 버튼 -->
-    <div class="switch">
+    <div class="OnOff">
         <h1>SONNY</h1>
-        <button id="button5">
-            Day
+        <button id="switch">
+            <img id="switch-img" src="off.png" alt="스위치">
         </button> 
     </div>    
 
     <!-- 리버풀 페이지 버튼 -->
-    <button id="button1">
-        <a>Liverpool</a>
-    </button>
+    <button id="button1">Liverpool</button>
     <br>
-    <!-- 비트 플로우 페이지 버튼 -->
-    <button id="button2">
-        <a>Bitflow</a>
-    </button>
+    <button id="button2">Bitflow</button>
     <br>
-    <!-- 노션 이동 버튼 -->
-    <button id="button3">
-        <a>Notion</a>
-    </button>
+    <button id="button3">Notion</button>
     <br>
-    <!-- 네이버 블로그 이동 버튼 -->
-    <button id="button4">
-        <a>Naver-Blog</a>
-    </button>
+    <button id="button4">Naver-Blog</button>
 
     <script>
-
         // 밤낮 조절 버튼
-        const daychangeButton = document.getElementById('button5');
-        daychangeButton.addEventListener('click', function(){
-            const body = document.body;
-            if (daychangeButton.textContent === 'Day') {
-                body.style.backgroundImage = 'none';
-                body.style.backgroundColor = 'black'; // 어두운 배경화면 
-                body.style.color = 'white';
-                daychangeButton.textContent = 'Night';
-                daychangeButton.style.backgroundColor = '#333';
-                daychangeButton.style.color = 'white';
+        const daychangeButton = document.getElementById('switch');
+        const switchImg = document.getElementById('switch-img');
+        const body = document.body;
+
+        // 페이지 로드 시 초기 상태 설정
+        window.onload = function () {
+            body.style.backgroundImage = "url('Day.png')"; // 기본 배경을 Day.png로 설정
+        };
+
+        // 스위치 버튼 Day & Night 조작
+        daychangeButton.addEventListener('click', function () {
+            if (switchImg.getAttribute('src') === 'off.png') {
+                // Night 모드로 변경
+                body.style.backgroundImage = "url('Night.png')";
+                switchImg.setAttribute('src', 'on.png'); // 불 키기
             } else {
-                body.style.backgroundImage = 'none';
-                body.style.backgroundColor = 'white'; // 밝은 배경화면
-                body.style.color = 'black';
-                daychangeButton.textContent = 'Day';
-                daychangeButton.style.backgroundColor = '#ffcc00';
-                daychangeButton.style.color = 'black';
+                // Day 모드로 변경
+                body.style.backgroundImage = "url('Day.png')";
+                switchImg.setAttribute('src', 'off.png'); // 불 끄기
             }
         });
 
-        //페이지 이동
-        document.getElementById('button1').addEventListener('click', function() {
+        // 페이지 이동
+        document.getElementById('button1').addEventListener('click', function () {
             window.location.href = 'https://sonny0126.github.io/Web/';
         });
-        document.getElementById('button2').addEventListener('click', function() {
+        document.getElementById('button2').addEventListener('click', function () {
             window.location.href = 'https://sonny0126.github.io/BitFlow/';
         });
-        document.getElementById('button3').addEventListener('click', function(){
+        document.getElementById('button3').addEventListener('click', function () {
             window.location.href = 'https://www.notion.so/Son-e53d58b3025f42d68700120ed5c20715';
         });
-        document.getElementById('button4').addEventListener('click', function(){
+        document.getElementById('button4').addEventListener('click', function () {
             window.location.href = 'https://blog.naver.com/chewypig';
         });
     </script>
-
-
 </body>
 </html>

@@ -1,6 +1,5 @@
 /* 전체 버튼 스타일 */
 button {
-    background-color: #4CAF50; /* 배경 색 */
     border: none; /* 기본 버튼 테두리 제거 */
     color: white; /* 글자 색 */
     padding: 15px 32px; /* 버튼의 패딩 */
@@ -21,7 +20,6 @@ h1{
 
 /* 버튼에 마우스 오버 시 배경색 변경 및 약간의 확대 효과 */
 button:hover {
-    background-color: #45a049; /* 마우스 오버 시 배경 색 */
     transform: scale(1.05); /* 버튼 약간 확대 */
 }
 
@@ -67,18 +65,22 @@ button a {
     background-color: #3BB143; /* Notion 버튼 hover 색 */
 }
 
-.switch{
+/* class 받을 때 . */
+.OnOff{
     display: flex;
     gap: 50px;
     align-items: center; /* 수직 정렬 */
     padding: 10px; 
 }
 
-/*밤 낮 변경 버튼 */
-#button5 {
-    background-color: #ffcc00; /* Notion 버튼 색 */
+#switch{
+    background:none;
+    border: none;
+    cursor: pointer;
+    padding: 0;
 }
 
-#button5:hover {
-    background-color: #ffcc00; /* Notion 버튼 hover 색 */
+#switch img{
+    width: 50px;
+    height: auto;
 }
