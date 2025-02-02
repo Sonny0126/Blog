@@ -1,4 +1,6 @@
-/* 전체 버튼 스타일 */
+/* =========================
+    전체 버튼 스타일
+=========================== */
 button {
     border: none; /* 기본 버튼 테두리 제거 */
     color: white; /* 글자 색 */
@@ -13,11 +15,6 @@ button {
     transition: background-color 0.3s, transform 0.3s; /* 마우스 호버 시 효과 */
 }
 
-h1{
-   margin-left: 20px; 
-   color: #0018F9;
-}
-
 /* 버튼에 마우스 오버 시 배경색 변경 및 약간의 확대 효과 */
 button:hover {
     transform: scale(1.05); /* 버튼 약간 확대 */
@@ -29,7 +26,11 @@ button a {
     text-decoration: none; /* 링크의 밑줄 제거 */
 }
 
-/* 버튼의 첫 번째 버튼 (Liverpool) */
+/* =========================
+    버튼 개별 스타일
+=========================== */
+
+/* 첫 번째 버튼 (Liverpool) */
 #button1 {
     background-color: #ff4d4d; /* Liverpool 버튼 색 */
 }
@@ -58,29 +59,148 @@ button a {
 
 /* 네 번째 버튼 */
 #button4 {
-    background-color: #4CBB17; /* Notion 버튼 색 */
+    background-color: #4CBB17; /* Naver Blog 버튼 색 */
 }
 
 #button4:hover {
-    background-color: #3BB143; /* Notion 버튼 hover 색 */
+    background-color: #3BB143; /* Naver Blog 버튼 hover 색 */
 }
 
-/* class 받을 때 . */
-.OnOff{
+/* =========================
+    OnOff 부분 스타일
+=========================== */
+.OnOff {
     display: flex;
     gap: 50px;
     align-items: center; /* 수직 정렬 */
-    padding: 10px; 
+    padding: 10px;
 }
 
-#switch{
-    background:none;
+/* 스위치 버튼 스타일 */
+#switch {
+    background: none;
     border: none;
     cursor: pointer;
     padding: 0;
 }
 
-#switch img{
+/* 스위치 이미지 크기 */
+#switch img {
     width: 50px;
     height: auto;
+}
+
+/* =========================
+    왼쪽 메뉴 부분 스타일
+=========================== */
+.left {
+    margin-left: -150px;
+    margin-top: -400px;
+    width: 20%;
+    padding: 20px;
+    position: fixed;
+}
+
+/* =========================
+    가운데 부분 (To-Do List 포함) 스타일
+=========================== */
+.center {
+    position: fixed;  /* 페이지에서 고정 위치로 설정 */
+    top: 0%;  /* 화면의 수직 중앙 */
+    left: 50%;  /* 화면의 수평 중앙 */
+    transform: translate(-50%, 0);  /* 수평 중앙만 정렬, 수직 중앙은 조정 */
+    width: 55%;
+    height: 60%;  /* 고정 높이로 설정 */
+    padding: 20px;
+    border-radius: 10px;
+    box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
+    text-align: center;
+}
+
+/* =========================
+    To-Do List 스타일
+=========================== */
+input {
+    width: 80%;
+    padding: 10px;
+    margin-bottom: 15px;
+    border-radius: 5px;
+    border: 1px solid #ccc;
+    font-size: 16px;
+}
+
+/* 할 일 리스트 스타일 */
+ul#taskList {
+    margin-left: 140px;
+    list-style: none;
+    padding: 0;
+    margin-top: 10px;
+}
+
+li {
+    background: #f1f1f1;
+    padding: 12px;
+    margin-top: 10px;
+    border-radius: 8px;
+    cursor: pointer;
+    font-size: 18px;
+    transition: background-color 0.3s;
+}
+
+li:hover {
+    background: #ddd;
+}
+
+/* =========================
+    전체 레이아웃 스타일
+=========================== */
+body {
+    margin: 0;
+    padding: 0;
+    background-image: url('Day.png'); /* 기본 배경 */
+    background-repeat: no-repeat;
+    background-size: cover; 
+    background-attachment: fixed;
+    transition: background-image 0.5s ease; /* 부드러운 전환 효과 */
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    height: 100vh;
+}
+
+/* =========================
+    컨테이너 스타일
+=========================== */
+.container {
+    display: flex;
+    width: 80%;
+    justify-content: space-between;
+}
+
+/* =========================
+    삭제 버튼 스타일
+=========================== */
+.deleteButton {
+    margin-left: 10px;
+    background-color: #ff4d4d; /* Red color */
+    color: white;
+    border: none;
+    padding: 5px 10px;
+    border-radius: 5px;
+}
+
+.deleteButton:hover {
+    background-color: #e60000; /* Darker red on hover */
+}
+
+/* 리스트 항목 스타일 */
+li {
+    display: flex;
+    justify-content: space-between;
+    margin-bottom: 10px;
+    width: 60%;
+    padding: 10px;
+    background-color: #f4f4f4;
+    border-radius: 5px;
+    
 }

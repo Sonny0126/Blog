@@ -5,76 +5,141 @@
 
     <link rel="stylesheet" href="index.css">
 
-    <!-- 배경화면 스타일 설정 -->
-    <style>
-        body {
-            margin: 0;
-            padding: 0;
-            background-image: url('Day.png'); /* 기본 배경 */
-            background-repeat: no-repeat;
-            background-size: cover; 
-            background-attachment: fixed;
-            transition: background-image 0.5s ease; /* 부드러운 전환 효과 */
-        }
-    </style>
 
 </head>
 
 <body>
-    <!-- 밤낮 조절 버튼 -->
-    <div class="OnOff">
-        <h1>SONNY</h1>
-        <button id="switch">
-            <img id="switch-img" src="off.png" alt="스위치">
-        </button> 
-    </div>    
+    <div class="container">
+        <div class="left">
+        <!-- 왼쪽 부분 처리   -->
+        <!-- 밤낮 조절 버튼 -->
+        <div class="OnOff">
+            <h1>SON</h1>
+            <button id="switch">
+                <img id="switch-img" src="off.png" alt="스위치">
+            </button> 
+        </div>    
 
-    <!-- 리버풀 페이지 버튼 -->
-    <button id="button1">Liverpool</button>
-    <br>
-    <button id="button2">Bitflow</button>
-    <br>
-    <button id="button3">Notion</button>
-    <br>
-    <button id="button4">Naver-Blog</button>
+        <!-- 리버풀 페이지 버튼 -->
+        <button id="button1">Liverpool</button>
+        <br>
+        <button id="button2">Bitflow</button>
+        <br>
+        <button id="button3">Notion</button>
+        <br>
+        <button id="button4">Naver-Blog</button>
 
-    <script>
-        // 밤낮 조절 버튼
-        const daychangeButton = document.getElementById('switch');
-        const switchImg = document.getElementById('switch-img');
-        const body = document.body;
+        <script>
+            // 밤낮 조절 버튼
+            const daychangeButton = document.getElementById('switch');
+            const switchImg = document.getElementById('switch-img');
+            const body = document.body;
 
-        // 페이지 로드 시 초기 상태 설정
-        window.onload = function () {
-            body.style.backgroundImage = "url('Day.png')"; // 기본 배경을 Day.png로 설정
-        };
+            // 페이지 로드 시 초기 상태 설정
+            window.onload = function () {
+                body.style.backgroundImage = "url('Day.png')"; // 기본 배경을 Day.png로 설정
+            };
 
-        // 스위치 버튼 Day & Night 조작
-        daychangeButton.addEventListener('click', function () {
-            if (switchImg.getAttribute('src') === 'off.png') {
-                // Night 모드로 변경
-                body.style.backgroundImage = "url('Night.png')";
-                switchImg.setAttribute('src', 'on.png'); // 불 키기
-            } else {
-                // Day 모드로 변경
-                body.style.backgroundImage = "url('Day.png')";
-                switchImg.setAttribute('src', 'off.png'); // 불 끄기
+            // 스위치 버튼 Day & Night 조작
+            daychangeButton.addEventListener('click', function () {
+                if (switchImg.getAttribute('src') === 'off.png') {
+                    // Night 모드로 변경
+                    body.style.backgroundImage = "url('Night.png')";
+                    switchImg.setAttribute('src', 'on.png'); // 불 키기
+                } else {
+                    // Day 모드로 변경
+                    body.style.backgroundImage = "url('Day.png')";
+                    switchImg.setAttribute('src', 'off.png'); // 불 끄기
+                }
+            });
+
+            // 페이지 이동
+            document.getElementById('button1').addEventListener('click', function () {
+                window.location.href = 'https://sonny0126.github.io/Web/';
+            });
+            document.getElementById('button2').addEventListener('click', function () {
+                window.location.href = 'https://sonny0126.github.io/BitFlow/';
+            });
+            document.getElementById('button3').addEventListener('click', function () {
+                window.location.href = 'https://www.notion.so/Son-e53d58b3025f42d68700120ed5c20715';
+            });
+            document.getElementById('button4').addEventListener('click', function () {
+                window.location.href = 'https://blog.naver.com/chewypig';
+            });
+        </script>
+        </div>
+
+        <!-- 가운데 부분 -->
+        <div class="center">
+            <h2>Daily List</h2>
+            <input type="text" id="taskInput" placeholder="What are you going to do?">
+            <button id="addButton">Add</button>
+            <ul id="taskList"></ul>
+
+            <script>
+        // 로컬 스토리지에서 할 일 목록 불러오기
+        function loadTasks() {
+            const taskList = JSON.parse(localStorage.getItem('tasks')) || [];
+            const taskListElement = document.getElementById('taskList');
+            taskListElement.innerHTML = ''; // 기존 목록 비우기
+
+            taskList.forEach((task, index) => {
+                const li = document.createElement('li');
+                li.textContent = task;
+                const deleteButton = document.createElement('button');
+                deleteButton.textContent = 'Delete';
+                deleteButton.classList.add('deleteButton');
+                deleteButton.onclick = () => deleteTask(index);
+                li.appendChild(deleteButton);
+                taskListElement.appendChild(li);
+            });
+        }
+
+        // 할 일 추가 함수
+        function addTask() {
+            const taskInput = document.getElementById('taskInput');
+            const taskListElement = document.getElementById('taskList');
+            const task = taskInput.value.trim();
+
+            if (task === '') {
+                alert('Please enter a task!');
+                return;
+            }
+
+            const taskList = JSON.parse(localStorage.getItem('tasks')) || [];
+            taskList.push(task); // 새 할 일 추가
+
+            localStorage.setItem('tasks', JSON.stringify(taskList)); // 로컬 스토리지에 저장
+
+            taskInput.value = ''; // 입력창 비우기
+            loadTasks(); // 할 일 목록 다시 로드
+        }
+
+        // 할 일 삭제 함수
+        function deleteTask(index) {
+            const taskList = JSON.parse(localStorage.getItem('tasks')) || [];
+            taskList.splice(index, 1); // 해당 인덱스의 할 일 삭제
+
+            localStorage.setItem('tasks', JSON.stringify(taskList)); // 로컬 스토리지에 업데이트
+            loadTasks(); // 할 일 목록 다시 로드
+        }
+
+        // 페이지 로드 시 할 일 목록 불러오기
+        window.onload = loadTasks;
+
+        // 버튼 클릭 시 할 일 추가
+        const addButton = document.getElementById('addButton');
+        addButton.addEventListener('click', addTask);
+
+        // 입력 필드에서 Enter 키 눌렀을 때 addTask 함수 실행
+        const taskInput = document.getElementById('taskInput');
+        taskInput.addEventListener('keypress', function(event) {
+            if (event.key === 'Enter') {
+                addTask();
             }
         });
-
-        // 페이지 이동
-        document.getElementById('button1').addEventListener('click', function () {
-            window.location.href = 'https://sonny0126.github.io/Web/';
-        });
-        document.getElementById('button2').addEventListener('click', function () {
-            window.location.href = 'https://sonny0126.github.io/BitFlow/';
-        });
-        document.getElementById('button3').addEventListener('click', function () {
-            window.location.href = 'https://www.notion.so/Son-e53d58b3025f42d68700120ed5c20715';
-        });
-        document.getElementById('button4').addEventListener('click', function () {
-            window.location.href = 'https://blog.naver.com/chewypig';
-        });
-    </script>
+        </script>
+        </div>
+    </div>
 </body>
 </html>
