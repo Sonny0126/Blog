@@ -1,206 +1,244 @@
 /* =========================
-    전체 버튼 스타일
-=========================== */
-button {
-    border: none; /* 기본 버튼 테두리 제거 */
-    color: white; /* 글자 색 */
-    padding: 15px 32px; /* 버튼의 패딩 */
-    text-align: center; /* 텍스트 가운데 정렬 */
-    text-decoration: none; /* 링크의 밑줄 제거 */
-    display: inline-block; /* 버튼을 가로로 배치 */
-    font-size: 16px; /* 폰트 크기 */
-    margin: 10px; /* 버튼 간격 */
-    border-radius: 8px; /* 버튼 모서리 둥글게 */
-    cursor: pointer; /* 마우스 포인터를 손 모양으로 */
-    transition: background-color 0.3s, transform 0.3s; /* 마우스 호버 시 효과 */
-}
-
-/* 버튼에 마우스 오버 시 배경색 변경 및 약간의 확대 효과 */
-button:hover {
-    transform: scale(1.05); /* 버튼 약간 확대 */
-}
-
-/* 버튼 내 a 링크 스타일 */
-button a {
-    color: white; /* 링크 색상 */
-    text-decoration: none; /* 링크의 밑줄 제거 */
-}
-
-/* =========================
-    버튼 개별 스타일
-=========================== */
-
-/* 첫 번째 버튼 (Liverpool) */
-#button1 {
-    background-color: #ff4d4d; /* Liverpool 버튼 색 */
-}
-
-#button1:hover {
-    background-color: #e60000; /* Liverpool 버튼 hover 색 */
-}
-
-/* 두 번째 버튼 (Bitflow) */
-#button2 {
-    background-color: #FEE12B; /* Bitflow 버튼 색 */
-}
-
-#button2:hover {
-    background-color: #FFF200; /* Bitflow 버튼 hover 색 */
-}
-
-/* 세 번째 버튼 (Notion) */
-#button3 {
-    background-color: #881699; /* Notion 버튼 색 */
-}
-
-#button3:hover {
-    background-color: #4D0C83; /* Notion 버튼 hover 색 */
-}
-
-/* 네 번째 버튼 */
-#button4 {
-    background-color: #4CBB17; /* Naver Blog 버튼 색 */
-}
-
-#button4:hover {
-    background-color: #3BB143; /* Naver Blog 버튼 hover 색 */
-}
-
-/* =========================
-    OnOff 부분 스타일
-=========================== */
-.OnOff {
-    display: flex;
-    gap: 50px;
-    align-items: center; /* 수직 정렬 */
-    padding: 10px;
-}
-
-/* 스위치 버튼 스타일 */
-#switch {
-    background: none;
-    border: none;
-    cursor: pointer;
-    padding: 0;
-}
-
-/* 스위치 이미지 크기 */
-#switch img {
-    width: 50px;
-    height: auto;
-}
-
-/* =========================
-    왼쪽 메뉴 부분 스타일
-=========================== */
-.left {
-    margin-left: -150px;
-    margin-top: -400px;
-    width: 20%;
-    padding: 20px;
-    position: fixed;
-}
-
-/* =========================
-    가운데 부분 (To-Do List 포함) 스타일
-=========================== */
-.center {
-    position: fixed;  /* 페이지에서 고정 위치로 설정 */
-    top: 0%;  /* 화면의 수직 중앙 */
-    left: 50%;  /* 화면의 수평 중앙 */
-    transform: translate(-50%, 0);  /* 수평 중앙만 정렬, 수직 중앙은 조정 */
-    width: 55%;
-    height: 60%;  /* 고정 높이로 설정 */
-    padding: 20px;
-    border-radius: 10px;
-    box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
-    text-align: center;
-}
-
-/* =========================
-    To-Do List 스타일
-=========================== */
-input {
-    width: 80%;
-    padding: 10px;
-    margin-bottom: 15px;
-    border-radius: 5px;
-    border: 1px solid #ccc;
-    font-size: 16px;
-}
-
-/* 할 일 리스트 스타일 */
-ul#taskList {
-    margin-left: 140px;
-    list-style: none;
-    padding: 0;
-    margin-top: 10px;
-}
-
-li {
-    background: #f1f1f1;
-    padding: 12px;
-    margin-top: 10px;
-    border-radius: 8px;
-    cursor: pointer;
-    font-size: 18px;
-    transition: background-color 0.3s;
-}
-
-li:hover {
-    background: #ddd;
-}
-
-/* =========================
-    전체 레이아웃 스타일
-=========================== */
-body {
-    margin: 0;
-    padding: 0;
-    background-image: url('Day.png'); /* 기본 배경 */
-    background-repeat: no-repeat;
-    background-size: cover; 
-    background-attachment: fixed;
-    transition: background-image 0.5s ease; /* 부드러운 전환 효과 */
-    display: flex;
-    justify-content: center;
-    align-items: center;
-    height: 100vh;
-}
-
-/* =========================
-    컨테이너 스타일
+    전체 컨테이너 스타일
 =========================== */
 .container {
     display: flex;
-    width: 80%;
     justify-content: space-between;
+    align-items: flex-start;
+    width: 100%;
+    margin: 20px auto;
+    gap: 20px;
 }
 
 /* =========================
-    삭제 버튼 스타일
+    왼쪽 부분 스타일
 =========================== */
-.deleteButton {
-    margin-left: 10px;
-    background-color: #ff4d4d; /* Red color */
+.left {
+    width: 10%;
+    background: #f4f4f4;
+    padding: 20px;
+    border-radius: 10px;
+    text-align: center;
+}
+
+.left button {
+    display: block;
+    width: 100%;
+    padding: 10px;
+    margin: 10px 0;
+    font-size: 1em;
+    background: #000000;
+    color: white;
+    border: none;
+    border-radius: 5px;
+    cursor: pointer;
+    transition: background 0.3s;
+}
+
+.left button:hover {
+    background: #cc2525;
+}
+
+/* 밤낮 조절 버튼 */
+.OnOff {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    margin-bottom: 20px;
+}
+
+.OnOff h1 {
+    font-size: 1.5em;
+    margin-bottom: 10px;
+}
+
+#switch {
+    border: none;
+    background: none;
+    cursor: pointer;
+}
+
+#switch-img {
+    width: 50px;  /* 원하는 크기로 조정 */
+    height: 50px; /* 원하는 크기로 조정 */
+}
+
+/* =========================
+    가운데 부분 스타일
+=========================== */
+.center {
+    width: 100%;
+    background: #ffffff;
+    padding: 20px;
+    border-radius: 10px;
+    text-align: center;
+    box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+}
+
+.center h2 {
+    font-size: 1.8em;
+    margin-bottom: 15px;
+}
+
+#taskInput {
+    width: 80%;
+    padding: 10px;
+    font-size: 1em;
+    margin-bottom: 10px;
+    border: 1px solid #ddd;
+    border-radius: 5px;
+}
+
+#addButton {
+    padding: 10px 15px;
+    font-size: 1em;
+    background: #4CAF50;
+    color: white;
+    border: none;
+    border-radius: 5px;
+    cursor: pointer;
+    transition: background 0.3s;
+}
+
+#addButton:hover {
+    background: #388E3C;
+}
+
+#taskList {
+    list-style: none;
+    padding: 0;
+    text-align: left;
+    margin-top: 10px;
+}
+
+#taskList li {
+    background: #f9f9f9;
+    padding: 10px;
+    margin: 5px 0;
+    border-radius: 5px;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+}
+
+.delete-btn {
+    background: #ff3030;
     color: white;
     border: none;
     padding: 5px 10px;
-    border-radius: 5px;
+    border-radius: 3px;
+    cursor: pointer;
+    font-size: 0.8em;
 }
 
-.deleteButton:hover {
-    background-color: #e60000; /* Darker red on hover */
+/* =========================
+    오른쪽 부분 스타일 (캘린더)
+=========================== */
+
+.right {
+    width: 50%;
+    text-align: center;
+    padding: 20px;
+    background: #ffffff;
+    border-radius: 10px;
+    box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+    box-sizing: border-box;
 }
 
-/* 리스트 항목 스타일 */
-li {
+.calendar {
+    width: 100%;
+    max-width: 320px;
+    margin: 0 auto;
+}
+
+.calendar-header {
     display: flex;
     justify-content: space-between;
-    margin-bottom: 10px;
-    width: 60%;
-    padding: 10px;
-    background-color: #f4f4f4;
+    align-items: center;
+    margin-bottom: 15px;
+    font-size: 1.5em;
+    color: #333;
+}
+
+.nav-btn {
+    border: none;
+    background: #f4f4f4;
+    padding: 5px 10px;
     border-radius: 5px;
-    
+    cursor: pointer;
+    transition: background 0.3s;
+}
+
+.nav-btn:hover {
+    background: #ddd;
+}
+
+.calendar-body {
+    display: flex;
+    flex-direction: column;
+}
+
+.days {
+    display: flex;
+    justify-content: space-between;
+    font-weight: bold;
+    color: #555;
+}
+
+.day {
+    width: calc(100% / 7);
+    text-align: center;
+}
+
+.dates {
+    display: flex;
+    flex-wrap: wrap;
+    justify-content: space-between;
+    margin-top: 10px;
+}
+
+.date {
+    width: calc(100% / 7);
+    height: 40px;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    cursor: pointer;
+    transition: background 0.3s, color 0.3s;
+    border-radius: 5px;
+}
+
+.date:hover {
+    background: #f4f4f4;
+}
+
+.today {
+    background: #ff3030;
+    color: white;
+}
+
+
+/* =========================
+    반응형 디자인 (모바일 최적화)
+=========================== */
+@media (max-width: 768px) {
+    .container {
+        flex-direction: column;
+        align-items: center;
+    }
+
+    .left, .center, .right {
+        width: 90%;
+        margin-bottom: 20px;
+    }
+}
+
+/* =========================
+    전체 화면 부분
+=========================== */
+
+body {
+    background-image: url('Day.png'); /* 또는 Night.png */
+    background-size: cover;  /* 배경화면을 화면에 꽉 차게 조정 */
+    background-repeat: no-repeat; /* 배경 반복 제거 */
 }

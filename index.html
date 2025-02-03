@@ -2,144 +2,218 @@
 <html lang="en">
 <head>
     <meta charset="utf-8">
-
+    <title>Dashboard</title>
     <link rel="stylesheet" href="index.css">
-
-
 </head>
-
 <body>
     <div class="container">
+        <!-- 왼쪽 영역 -->
         <div class="left">
-        <!-- 왼쪽 부분 처리   -->
-        <!-- 밤낮 조절 버튼 -->
-        <div class="OnOff">
-            <h1>SON</h1>
-            <button id="switch">
-                <img id="switch-img" src="off.png" alt="스위치">
-            </button> 
-        </div>    
-
-        <!-- 리버풀 페이지 버튼 -->
-        <button id="button1">Liverpool</button>
-        <br>
-        <button id="button2">Bitflow</button>
-        <br>
-        <button id="button3">Notion</button>
-        <br>
-        <button id="button4">Naver-Blog</button>
-
-        <script>
-            // 밤낮 조절 버튼
-            const daychangeButton = document.getElementById('switch');
-            const switchImg = document.getElementById('switch-img');
-            const body = document.body;
-
-            // 페이지 로드 시 초기 상태 설정
-            window.onload = function () {
-                body.style.backgroundImage = "url('Day.png')"; // 기본 배경을 Day.png로 설정
-            };
-
-            // 스위치 버튼 Day & Night 조작
-            daychangeButton.addEventListener('click', function () {
-                if (switchImg.getAttribute('src') === 'off.png') {
-                    // Night 모드로 변경
-                    body.style.backgroundImage = "url('Night.png')";
-                    switchImg.setAttribute('src', 'on.png'); // 불 키기
-                } else {
-                    // Day 모드로 변경
-                    body.style.backgroundImage = "url('Day.png')";
-                    switchImg.setAttribute('src', 'off.png'); // 불 끄기
-                }
-            });
-
-            // 페이지 이동
-            document.getElementById('button1').addEventListener('click', function () {
-                window.location.href = 'https://sonny0126.github.io/Web/';
-            });
-            document.getElementById('button2').addEventListener('click', function () {
-                window.location.href = 'https://sonny0126.github.io/BitFlow/';
-            });
-            document.getElementById('button3').addEventListener('click', function () {
-                window.location.href = 'https://www.notion.so/Son-e53d58b3025f42d68700120ed5c20715';
-            });
-            document.getElementById('button4').addEventListener('click', function () {
-                window.location.href = 'https://blog.naver.com/chewypig';
-            });
-        </script>
+            <div class="OnOff">
+                <h1>SON</h1>
+                <button id="switch">
+                    <img id="switch-img" src="off.png" alt="스위치">
+                </button>
+            </div>    
+            <div class="button-group">
+                <button id="button1">Liverpool</button>
+                <button id="button2">Bitflow</button>
+                <button id="button3">Notion</button>
+                <button id="button4">Naver-Blog</button>
+            </div>
         </div>
-
-        <!-- 가운데 부분 -->
+    
+        <!-- 중앙 영역 -->
         <div class="center">
             <h2>Daily List</h2>
             <input type="text" id="taskInput" placeholder="What are you going to do?">
             <button id="addButton">Add</button>
             <ul id="taskList"></ul>
+        </div>
+    
+        <!-- 오른쪽 영역 -->
+        <div class="right">
+            <div class="calendar">
+                <div class="calendar-header">
+                    <button id="prev" class="nav-btn">&lt;</button>
+                    <span id="month-year"></span>
+                    <button id="next" class="nav-btn">&gt;</button>
+                </div>
+                <div class="calendar-body">
+                    <div class="days">
+                        <span class="day">SUN</span>
+                        <span class="day">MON</span>
+                        <span class="day">TUE</span>
+                        <span class="day">WED</span>
+                        <span class="day">THU</span>
+                        <span class="day">FRI</span>
+                        <span class="day">SAT</span>
+                    </div>
+                    <div class="dates" id="dates"></div>
+                </div>
+            </div>
+        </div>
+        
+    </div>    
 
-            <script>
-        // 로컬 스토리지에서 할 일 목록 불러오기
-        function loadTasks() {
-            const taskList = JSON.parse(localStorage.getItem('tasks')) || [];
-            const taskListElement = document.getElementById('taskList');
-            taskListElement.innerHTML = ''; // 기존 목록 비우기
+    <script>
+        // ✅ 밤낮 조절 버튼 기능
+        const switchButton = document.getElementById('switch');
+        const switchImg = document.getElementById('switch-img');
+        const body = document.body;
 
-            taskList.forEach((task, index) => {
-                const li = document.createElement('li');
-                li.textContent = task;
-                const deleteButton = document.createElement('button');
-                deleteButton.textContent = 'Delete';
-                deleteButton.classList.add('deleteButton');
-                deleteButton.onclick = () => deleteTask(index);
-                li.appendChild(deleteButton);
-                taskListElement.appendChild(li);
+        window.onload = () => {
+            body.style.backgroundImage = "url('Day.png')";
+            loadTasks(); // ✅ 페이지 로드 시 할 일 목록 불러오기
+        };
+
+        switchButton.addEventListener('click', () => {
+            const isNight = switchImg.getAttribute('src') === 'off.png';
+            body.style.backgroundImage = isNight ? "url('Night.png')" : "url('Day.png')";
+            switchImg.setAttribute('src', isNight ? 'on.png' : 'off.png');
+        });
+
+        // ✅ 페이지 이동 버튼 기능
+        const pageLinks = {
+            button1: 'https://sonny0126.github.io/Web/',
+            button2: 'https://sonny0126.github.io/BitFlow/',
+            button3: 'https://www.notion.so/Son-e53d58b3025f42d68700120ed5c20715',
+            button4: 'https://blog.naver.com/'
+        };
+
+        Object.keys(pageLinks).forEach(id => {
+            document.getElementById(id).addEventListener('click', () => {
+                window.location.href = pageLinks[id];
             });
-        }
+        });
 
-        // 할 일 추가 함수
+        // ✅ 할 일 추가 함수
         function addTask() {
-            const taskInput = document.getElementById('taskInput');
-            const taskListElement = document.getElementById('taskList');
+            const taskInput = document.getElementById("taskInput");
             const task = taskInput.value.trim();
 
-            if (task === '') {
-                alert('Please enter a task!');
-                return;
-            }
+            if (!task) return alert("Please enter a task!");
 
-            const taskList = JSON.parse(localStorage.getItem('tasks')) || [];
-            taskList.push(task); // 새 할 일 추가
+            // 현재 날짜 (기본값: 오늘 날짜)
+            const currentDate = new Date();
+            const dateString = `${currentDate.getFullYear()}-${String(currentDate.getMonth() + 1).padStart(2, "0")}-${String(currentDate.getDate()).padStart(2, "0")}`;
+            console.log(`Adding task for date: ${dateString}, Task: ${task}`); // 디버깅 출력
 
-            localStorage.setItem('tasks', JSON.stringify(taskList)); // 로컬 스토리지에 저장
+            // 로컬 스토리지에서 데이터 가져오기
+            const tasks = JSON.parse(localStorage.getItem("tasks")) || {};
+            tasks[dateString] = tasks[dateString] || [];
+            tasks[dateString].push(task);
 
-            taskInput.value = ''; // 입력창 비우기
-            loadTasks(); // 할 일 목록 다시 로드
+            // 로컬 스토리지에 저장
+            localStorage.setItem("tasks", JSON.stringify(tasks));
+            console.log("Updated tasks:", JSON.stringify(tasks)); // 디버깅 출력
+
+            taskInput.value = ""; // 입력 필드 초기화
+            showTasks(dateString); // 목록 갱신
         }
 
-        // 할 일 삭제 함수
-        function deleteTask(index) {
-            const taskList = JSON.parse(localStorage.getItem('tasks')) || [];
-            taskList.splice(index, 1); // 해당 인덱스의 할 일 삭제
-
-            localStorage.setItem('tasks', JSON.stringify(taskList)); // 로컬 스토리지에 업데이트
-            loadTasks(); // 할 일 목록 다시 로드
+        // ✅ 할 일 삭제 함수
+        function deleteTask(date, index) {
+            const tasks = JSON.parse(localStorage.getItem("tasks")) || {};
+            if (tasks[date]) {
+                tasks[date].splice(index, 1); // 해당 인덱스의 할 일 삭제
+                if (tasks[date].length === 0) delete tasks[date]; // 날짜별 할 일이 없으면 키 삭제
+                localStorage.setItem("tasks", JSON.stringify(tasks));
+                console.log(`Task deleted for date: ${date}, Remaining tasks:`, tasks[date]);
+                showTasks(date); // 목록 다시 표시
+            }
         }
 
-        // 페이지 로드 시 할 일 목록 불러오기
-        window.onload = loadTasks;
+        // ✅ Daily List 표시 함수
+        function showTasks(date) {
+            const taskListElement = document.getElementById("taskList");
 
-        // 버튼 클릭 시 할 일 추가
-        const addButton = document.getElementById('addButton');
-        addButton.addEventListener('click', addTask);
+            // 로컬 스토리지에서 날짜별 할 일 불러오기
+            const tasks = JSON.parse(localStorage.getItem("tasks")) || {};
+            const dailyTasks = tasks[date] || [];
+            console.log(`Showing tasks for date: ${date}, Tasks:`, dailyTasks); // 디버깅 출력
 
-        // 입력 필드에서 Enter 키 눌렀을 때 addTask 함수 실행
-        const taskInput = document.getElementById('taskInput');
-        taskInput.addEventListener('keypress', function(event) {
-            if (event.key === 'Enter') {
-                addTask();
+            // Daily List 표시
+            taskListElement.innerHTML = "";
+            dailyTasks.forEach((task, index) => {
+                const li = document.createElement("li");
+                li.textContent = task;
+
+                // 삭제 버튼 추가
+                const deleteButton = document.createElement("button");
+                deleteButton.textContent = "Delete";
+                deleteButton.classList.add("delete-btn");
+                deleteButton.onclick = () => deleteTask(date, index);
+                li.appendChild(deleteButton);
+
+                taskListElement.appendChild(li);
+            });
+
+            if (dailyTasks.length === 0) {
+                alert(`Tasks for ${date}: No tasks found.`);
+            } else {
+                alert(`Tasks for ${date}: ${dailyTasks.join(", ")}`);
             }
+        }
+
+        // ✅ 캘린더 렌더링 함수 (더블 클릭 이벤트 포함)
+        const calendar = {
+            currentDate: new Date(),
+            renderCalendar() {
+                const datesElement = document.getElementById("dates");
+                const monthYearElement = document.getElementById("month-year");
+
+                const currentYear = this.currentDate.getFullYear();
+                const currentMonth = this.currentDate.getMonth();
+
+                const monthNames = [
+                    "January", "February", "March", "April", "May",
+                    "June", "July", "August", "September", "October", "November", "December"
+                ];
+                monthYearElement.textContent = `${monthNames[currentMonth]} ${currentYear}`;
+
+                const firstDay = new Date(currentYear, currentMonth, 1).getDay();
+                const lastDate = new Date(currentYear, currentMonth + 1, 0).getDate();
+
+                datesElement.innerHTML = "";
+
+                // 현재 달 날짜 렌더링
+                for (let i = 1; i <= lastDate; i++) {
+                    const date = document.createElement("div");
+                    date.classList.add("date");
+
+                    const dateString = `${currentYear}-${String(currentMonth + 1).padStart(2, '0')}-${String(i).padStart(2, '0')}`;
+                    date.setAttribute("data-date", dateString);
+
+                    if (i === new Date().getDate() && currentMonth === new Date().getMonth() && currentYear === new Date().getFullYear()) {
+                        date.classList.add("today");
+                    }
+
+                    date.textContent = i;
+
+                    // 날짜 더블 클릭 이벤트 추가
+                    date.addEventListener("dblclick", () => showTasks(dateString));
+
+                    datesElement.appendChild(date);
+                }
+            },
+        };
+
+        // ✅ 초기화
+        calendar.renderCalendar();
+
+        // 이전/다음 버튼 클릭 이벤트
+        document.getElementById("prev").addEventListener("click", () => calendar.changeMonth(-1));
+        document.getElementById("next").addEventListener("click", () => calendar.changeMonth(1));
+
+        // 추가 버튼 및 Enter 키 이벤트
+        document.getElementById("addButton").addEventListener("click", addTask);
+        document.getElementById("taskInput").addEventListener("keypress", (e) => {
+            if (e.key === "Enter") addTask();
         });
-        </script>
-        </div>
-    </div>
+
+
+    </script>
+
 </body>
 </html>
