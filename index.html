@@ -149,6 +149,9 @@
                 const li = document.createElement("li");
                 li.textContent = task;
 
+                // 왼쪽에 체크박스 추가
+                li.appendChile(checkbox);
+
                 // 삭제 버튼 추가
                 const deleteButton = document.createElement("button");
                 deleteButton.textContent = "Delete";
@@ -160,9 +163,9 @@
             });
 
             if (dailyTasks.length === 0) {//비어 있다면
-                alert(`${date}: 일정이 없습니다`);
+                alert('일정이 없습니다');
             } else {
-                alert(`${date}일 일정은 ${dailyTasks.join("\n")}`);
+                alert('업데이트 되었습니다');
             }
         }
 
