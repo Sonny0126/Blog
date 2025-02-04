@@ -81,9 +81,9 @@
             button4: 'https://blog.naver.com/chewypig'
         };
 
-        Object.keys(pageLinks).forEach(id => {// 객체를 생성해서 각각의 id로 페이지링크들을 연결
+        Object.keys(pageLinks).forEach(id => {
             document.getElementById(id).addEventListener('click', () => {
-                window.location.href = pageLinks[id];
+                window.location.href = pageLinks[id]; // 버튼 클릭 시 해당 링크로 이동
             });
         });
 
@@ -160,9 +160,9 @@
             });
 
             if (dailyTasks.length === 0) {//비어 있다면
-                alert(`Tasks for ${date}: No tasks found.`);
+                alert(`${date}: 일정이 없습니다`);
             } else {
-                alert(`Tasks for ${date}: ${dailyTasks.join(", ")}`);
+                alert(`${date}일 일정은 ${dailyTasks.join("\n")}`);
             }
         }
 
@@ -198,7 +198,6 @@
                     // → 특정 날짜를 클릭했을 때 showTasks(dateString) 실행
                     // CSS 스타일을 자유롭게 변경할 수 있음
                     // → 오늘 날짜에 "today" 클래스를 추가하여 스타일을 다르게 적용 가능
-
                     const date = document.createElement("div"); // ...위에 참고
                     date.classList.add("date");
 
@@ -213,7 +212,6 @@
 
                     // 날짜 더블 클릭 이벤트 추가
                     date.addEventListener("dblclick", () => showTasks(dateString));
-
                     datesElement.appendChild(date);
                 }
             },
