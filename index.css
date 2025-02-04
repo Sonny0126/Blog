@@ -124,24 +124,31 @@
 /* 기본 체크박스 스타일 숨기기 */
 .task-checkbox {
     appearance: none; /* 기본 체크박스 제거 */
-    width: 20px;
-    height: 20px;
-    border: 2px solid green;
-    border-radius: 5px;
-    cursor: pointer;
-    display: inline-block;
-    text-align: center;
-    vertical-align: middle;
+    width: 20px; /* 체크박스 너비 */
+    height: 20px; /* 체크박스 높이 */
+    border: 2px solid green; /* 테두리 색상 */
+    border-radius: 5px; /* 둥근 모서리 */
+    cursor: pointer; /* 클릭 가능 */
+    display: inline-flex; /* 중앙 정렬을 위해 flex 사용 */
+    align-items: center; /* 수직 중앙 정렬 */
+    justify-content: center; /* 수평 중앙 정렬 */
+    vertical-align: middle; /* 텍스트와 정렬 */
+    position: relative; /* ::after에 영향을 주기 위해 position 설정 */
 }
 
 /* 체크되었을 때 ✅ 아이콘 표시 */
 .task-checkbox:checked::after {
-    content: "✅";
-    font-size: 18px;
-    display: block;
-    text-align: center;
-    color: green;
+    content: "✅"; /* 체크 표시 */
+    font-size: 14px; /* 아이콘 크기 조정 */
+    display: block; /* 표시 설정 */
+    text-align: center; /* 가운데 정렬 */
+    color: green; /* 아이콘 색상 */
+    position: absolute; /* 아이콘 위치 고정 */
+    top: 50%; /* 수직 중앙 정렬 */
+    left: 50%; /* 수평 중앙 정렬 */
+    transform: translate(-50%, -50%); /* 정렬 보정 */
 }
+
 
 .delete-btn {
     background: #ff3030;
