@@ -121,10 +121,26 @@
     align-items: center;
 }
 
-.checkbox{
-    background: #46A848;
-    color: white;
+/* 기본 체크박스 스타일 숨기기 */
+.task-checkbox {
+    appearance: none; /* 기본 체크박스 제거 */
+    width: 20px;
+    height: 20px;
+    border: 2px solid green;
+    border-radius: 5px;
     cursor: pointer;
+    display: inline-block;
+    text-align: center;
+    vertical-align: middle;
+}
+
+/* 체크되었을 때 ✅ 아이콘 표시 */
+.task-checkbox:checked::after {
+    content: "✅";
+    font-size: 18px;
+    display: block;
+    text-align: center;
+    color: green;
 }
 
 .delete-btn {
