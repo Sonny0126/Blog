@@ -121,6 +121,12 @@
     align-items: center;
 }
 
+.checkbox{
+    background: #46A848;
+    color: white;
+    cursor: pointer;
+}
+
 .delete-btn {
     background: #ff3030;
     color: white;
