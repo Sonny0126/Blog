@@ -68,9 +68,9 @@
         };
 
         switchButton.addEventListener('click', () => {
-            const isNight = switchImg.getAttribute('src') === 'off.png';
-            body.style.backgroundImage = isNight ? "url('Night.png')" : "url('Day.png')";
-            switchImg.setAttribute('src', isNight ? 'on.png' : 'off.png');
+            const isNight = switchImg.getAttribute('src') === 'off.png';//off 이미지가 눌리면
+            body.style.backgroundImage = isNight ? "url('Night.png')" : "url('Day.png')";//밤이라면 night, 아니라면 day
+            switchImg.setAttribute('src', isNight ? 'on.png' : 'off.png');//밤이라면 on.png, 아니라면, off.png
         });
 
         // ✅ 페이지 이동 버튼 기능
@@ -78,10 +78,10 @@
             button1: 'https://sonny0126.github.io/Web/',
             button2: 'https://sonny0126.github.io/BitFlow/',
             button3: 'https://www.notion.so/Son-e53d58b3025f42d68700120ed5c20715',
-            button4: 'https://blog.naver.com/'
+            button4: 'https://blog.naver.com/chewypig'
         };
 
-        Object.keys(pageLinks).forEach(id => {
+        Object.keys(pageLinks).forEach(id => {// 객체를 생성해서 각각의 id로 페이지링크들을 연결
             document.getElementById(id).addEventListener('click', () => {
                 window.location.href = pageLinks[id];
             });
@@ -92,35 +92,43 @@
             const taskInput = document.getElementById("taskInput");
             const task = taskInput.value.trim();
 
-            if (!task) return alert("Please enter a task!");
+            if (!task) return alert("Please enter a task!");//입력된 말이 없을 경우
 
             // 현재 날짜 (기본값: 오늘 날짜)
             const currentDate = new Date();
+            //dateString은 YYYY-MM-DD 형식의 문자열로 변환한다.
+            //getFullYear() 메서드는 주어진 날짜의 현지 시간 기준 연도를 반환 
+            //getMonth() 메서드는 Date 객체의 월 값을 현지 시간에 맞춰 반환합니다. 월은 0부터 시작합니다. -> 그래서 1을 더함
+            //getDate() 메서드는 주어진 날짜의 현지 시간 기준 일을 반환합니다.
+            //padStart() 메서드는 String 값의 메서드로, 결과 문자열이 주어진 길이에 도달할 때까지 이 문자열의 시작 부분에 다른 문자열을 (필요하다면 여러 번) 채운다.
             const dateString = `${currentDate.getFullYear()}-${String(currentDate.getMonth() + 1).padStart(2, "0")}-${String(currentDate.getDate()).padStart(2, "0")}`;
-            console.log(`Adding task for date: ${dateString}, Task: ${task}`); // 디버깅 출력
+            console.log(`Adding task for date: ${dateString}, Task: ${task}`);  // 디버깅 출력
 
-            // 로컬 스토리지에서 데이터 가져오기
-            const tasks = JSON.parse(localStorage.getItem("tasks")) || {};
-            tasks[dateString] = tasks[dateString] || [];
+            // 로컬 스토리지는 문자열만 저장 가능하지만 우리는 배열 또는 객체형태로 저장하고 싶음
+            // 이때, JSON.stringify()를 사용하여 객체를 문자열로 변환해 저장하고,
+            // 다시 가져올 때 JSON.parse()를 사용하여 원래의 객체로 변환해야 합니다.
+            const tasks = JSON.parse(localStorage.getItem("tasks")) || {}; //비었다면 객체 {} 빈칸
+            tasks[dateString] = tasks[dateString] || []; // 비었다면 배열 [] 빈칸
             tasks[dateString].push(task);
 
             // 로컬 스토리지에 저장
             localStorage.setItem("tasks", JSON.stringify(tasks));
             console.log("Updated tasks:", JSON.stringify(tasks)); // 디버깅 출력
 
-            taskInput.value = ""; // 입력 필드 초기화
-            showTasks(dateString); // 목록 갱신
+            taskInput.value = ""; // 입력 부분  초기화
+            showTasks(dateString); // 목록 업데이트
         }
 
         // ✅ 할 일 삭제 함수
         function deleteTask(date, index) {
-            const tasks = JSON.parse(localStorage.getItem("tasks")) || {};
+            const tasks = JSON.parse(localStorage.getItem("tasks")) || {}; //로컬 저장소에서 tasks로 이동
             if (tasks[date]) {
+                // splice() 메서드는 배열의 기존 요소를 삭제 또는 교체하거나 새 요소를 추가하여 배열의 내용을 변경
                 tasks[date].splice(index, 1); // 해당 인덱스의 할 일 삭제
                 if (tasks[date].length === 0) delete tasks[date]; // 날짜별 할 일이 없으면 키 삭제
                 localStorage.setItem("tasks", JSON.stringify(tasks));
-                console.log(`Task deleted for date: ${date}, Remaining tasks:`, tasks[date]);
-                showTasks(date); // 목록 다시 표시
+                console.log(`Task deleted for date: ${date}, Remaining tasks:`, tasks[date]); //디버깅 표시
+                showTasks(date); // 목록 업데이트
             }
         }
 
@@ -134,8 +142,10 @@
             console.log(`Showing tasks for date: ${date}, Tasks:`, dailyTasks); // 디버깅 출력
 
             // Daily List 표시
-            taskListElement.innerHTML = "";
+            // innerHTML 은 요소(element) 내에 포함 된 HTML 또는 XML 마크업을 가져오거나 설정
+            taskListElement.innerHTML = ""; //문서 내용 초기화
             dailyTasks.forEach((task, index) => {
+                // HTML 문서에서, Document.createElement() 메서드는 지정한 tagName의 HTML 요소를 만들어 반환
                 const li = document.createElement("li");
                 li.textContent = task;
 
@@ -143,13 +153,13 @@
                 const deleteButton = document.createElement("button");
                 deleteButton.textContent = "Delete";
                 deleteButton.classList.add("delete-btn");
-                deleteButton.onclick = () => deleteTask(date, index);
+                deleteButton.onclick = () => deleteTask(date, index); //삭제
                 li.appendChild(deleteButton);
-
+                // appendChild는 한 노드를 특정 부모노드의 자식 노드 리스트의 마지막 자식으로 추가
                 taskListElement.appendChild(li);
             });
 
-            if (dailyTasks.length === 0) {
+            if (dailyTasks.length === 0) {//비어 있다면
                 alert(`Tasks for ${date}: No tasks found.`);
             } else {
                 alert(`Tasks for ${date}: ${dailyTasks.join(", ")}`);
@@ -172,14 +182,24 @@
                 ];
                 monthYearElement.textContent = `${monthNames[currentMonth]} ${currentYear}`;
 
+                //Date 객체는 1970년 1월 1일 UTC(국제표준시) 자정으로부터 지난 시간을 밀리초로 나타내는 UNIX 타임스탬프를 포함한다.
                 const firstDay = new Date(currentYear, currentMonth, 1).getDay();
                 const lastDate = new Date(currentYear, currentMonth + 1, 0).getDate();
 
-                datesElement.innerHTML = "";
+                datesElement.innerHTML = ""; //초기화
 
                 // 현재 달 날짜 렌더링
                 for (let i = 1; i <= lastDate; i++) {
-                    const date = document.createElement("div");
+
+                    // ✅ document.createElement("div")를 써야 하는 이유
+                    // 각 날짜를 개별적인 <div> 요소로 다룰 수 있음
+                    // → setAttribute(), classList.add(), textContent 등을 사용할 수 있음
+                    // 이벤트 핸들러를 개별적으로 추가할 수 있음
+                    // → 특정 날짜를 클릭했을 때 showTasks(dateString) 실행
+                    // CSS 스타일을 자유롭게 변경할 수 있음
+                    // → 오늘 날짜에 "today" 클래스를 추가하여 스타일을 다르게 적용 가능
+
+                    const date = document.createElement("div"); // ...위에 참고
                     date.classList.add("date");
 
                     const dateString = `${currentYear}-${String(currentMonth + 1).padStart(2, '0')}-${String(i).padStart(2, '0')}`;
