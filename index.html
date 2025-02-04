@@ -108,24 +108,27 @@
             // 로컬 스토리지는 문자열만 저장 가능하지만 우리는 배열 또는 객체형태로 저장하고 싶음
             // 이때, JSON.stringify()를 사용하여 객체를 문자열로 변환해 저장하고,
             // 다시 가져올 때 JSON.parse()를 사용하여 원래의 객체로 변환해야 합니다.
-            const tasks = JSON.parse(localStorage.getItem("tasks")) || {}; //비었다면 객체 {} 빈칸
-            tasks[dateString] = tasks[dateString] || []; // 비었다면 배열 [] 빈칸
-            tasks[dateString].push(task);
-
-            // 체크 상태도 false로 초기화하여 저장
+            // ✅ 기존 할 일 목록 불러오기
+            const tasks = JSON.parse(localStorage.getItem("tasks")) || {};
             const checkedStates = JSON.parse(localStorage.getItem("checkedStates")) || {};
+
+            // ✅ 해당 날짜의 배열이 없으면 새로 생성
+            tasks[dateString] = tasks[dateString] || [];
             checkedStates[dateString] = checkedStates[dateString] || [];
-            checkedStates[dateString].push(false); // 새 할 일은 기본적으로 체크 안 된 상태
 
+            // ✅ 새 할 일 추가 (체크박스 상태는 기본적으로 false)
+            tasks[dateString].push(task);
+            checkedStates[dateString].push(false);
 
-            // 로컬 스토리지에 저장
+            // ✅ 로컬 스토리지에 저장
             localStorage.setItem("tasks", JSON.stringify(tasks));
             localStorage.setItem("checkedStates", JSON.stringify(checkedStates));
-            console.log("Updated tasks:", JSON.stringify(tasks));
-            console.log("Updated checked states:", JSON.stringify(checkedStates));
 
-            taskInput.value = ""; // 입력 부분  초기화
-            showTasks(dateString); // 목록 업데이트
+            console.log("Updated tasks:", JSON.stringify(tasks));
+
+            // ✅ 입력창 초기화 후 목록 다시 표시
+            taskInput.value = "";
+            showTasks(dateString);
         }
 
         // ✅ 할 일 삭제 함수
