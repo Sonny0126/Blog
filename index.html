@@ -90,7 +90,9 @@
         // ✅ 할 일 추가 함수
         function addTask() {
             const taskInput = document.getElementById("taskInput");
+            const taskList = document.getElementById("taskList");
             const task = taskInput.value.trim();
+            
 
             if (!task) return alert("할 일을 입력하세요");//입력된 말이 없을 경우
 
@@ -109,7 +111,7 @@
             // 다시 가져올 때 JSON.parse()를 사용하여 원래의 객체로 변환해야 합니다.
             const tasks = JSON.parse(localStorage.getItem("tasks")) || {}; //비었다면 객체 {} 빈칸
             tasks[dateString] = tasks[dateString] || []; // 비었다면 배열 [] 빈칸
-            tasks[dateString].push(task);
+            tasks[dateString].push({ text: task, checked: false});
 
             // 로컬 스토리지에 저장
             localStorage.setItem("tasks", JSON.stringify(tasks));
