@@ -90,10 +90,9 @@
         // ✅ 할 일 추가 함수
         function addTask() {
             const taskInput = document.getElementById("taskInput");
-            const taskList = document.getElementById("taskList");
             const task = taskInput.value.trim();
-            
 
+            
             if (!task) return alert("할 일을 입력하세요");//입력된 말이 없을 경우
 
             // 현재 날짜 (기본값: 오늘 날짜)
@@ -111,11 +110,19 @@
             // 다시 가져올 때 JSON.parse()를 사용하여 원래의 객체로 변환해야 합니다.
             const tasks = JSON.parse(localStorage.getItem("tasks")) || {}; //비었다면 객체 {} 빈칸
             tasks[dateString] = tasks[dateString] || []; // 비었다면 배열 [] 빈칸
-            tasks[dateString].push({ text: task, checked: false});
+            tasks[dateString].push(task);
+
+            // 체크 상태도 false로 초기화하여 저장
+            const checkedStates = JSON.parse(localStorage.getItem("checkedStates")) || {};
+            checkedStates[dateString] = checkedStates[dateString] || [];
+            checkedStates[dateString].push(false); // 새 할 일은 기본적으로 체크 안 된 상태
+
 
             // 로컬 스토리지에 저장
             localStorage.setItem("tasks", JSON.stringify(tasks));
-            console.log("Updated tasks:", JSON.stringify(tasks)); // 디버깅 출력
+            localStorage.setItem("checkedStates", JSON.stringify(checkedStates));
+            console.log("Updated tasks:", JSON.stringify(tasks));
+            console.log("Updated checked states:", JSON.stringify(checkedStates));
 
             taskInput.value = ""; // 입력 부분  초기화
             showTasks(dateString); // 목록 업데이트
@@ -124,12 +131,19 @@
         // ✅ 할 일 삭제 함수
         function deleteTask(date, index) {
             const tasks = JSON.parse(localStorage.getItem("tasks")) || {}; //로컬 저장소에서 tasks로 이동
+            const checkedStates = JSON.parse(localStorage.getItem("checkedStates")) || {};
             if (tasks[date]) {
                 // splice() 메서드는 배열의 기존 요소를 삭제 또는 교체하거나 새 요소를 추가하여 배열의 내용을 변경
                 tasks[date].splice(index, 1); // 해당 인덱스의 할 일 삭제
+                checkedStates[date].splice(index, 1); // 체크 상태도 함께 삭제
                 if (tasks[date].length === 0) delete tasks[date]; // 날짜별 할 일이 없으면 키 삭제
+                if (checkedStates[date].length === 0) delete checkedStates[date];
+
+                // 로컬 스토리지에 반영
                 localStorage.setItem("tasks", JSON.stringify(tasks));
-                console.log(`Task deleted for date: ${date}, Remaining tasks:`, tasks[date]); //디버깅 표시
+                localStorage.setItem("checkedStates", JSON.stringify(checkedStates));
+                console.log(`Task deleted for date: ${date}, Remaining tasks:`, tasks[date]);
+                console.log(`Updated checked states:`, checkedStates[date]);
                 showTasks(date); // 목록 업데이트
             }
         }
@@ -141,39 +155,54 @@
             // 로컬 스토리지에서 날짜별 할 일 불러오기
             const tasks = JSON.parse(localStorage.getItem("tasks")) || {};
             const dailyTasks = tasks[date] || [];
-            console.log(`Showing tasks for date: ${date}, Tasks:`, dailyTasks); // 디버깅 출력
+            console.log(`Showing tasks for date: ${date}, Tasks:`, dailyTasks);
 
-            // Daily List 표시
-            // innerHTML 은 요소(element) 내에 포함 된 HTML 또는 XML 마크업을 가져오거나 설정
-            taskListElement.innerHTML = ""; //문서 내용 초기화
+            // 체크 상태 불러오기
+            const checkedStates = JSON.parse(localStorage.getItem("checkedStates")) || {};
+
+            // 기존 목록 초기화
+            taskListElement.innerHTML = "";
+
             dailyTasks.forEach((task, index) => {
-                // HTML 문서에서, Document.createElement() 메서드는 지정한 tagName의 HTML 요소를 만들어 반환
                 const li = document.createElement("li");
-                li.textContent = task;
 
-                // 왼쪽에 체크박스 추가
-                const checkbox  = document.createElement("input");
+                // 체크박스 추가
+                const checkbox = document.createElement("input");
                 checkbox.type = "checkbox";
                 checkbox.classList.add("task-checkbox");
-                checkbox.style.marginRight= "10px";
-                li.prepend(checkbox); //체크박스를 리스트 항목의 맨 앞에 추가
+                checkbox.style.marginRight = "10px";
+                
+                // 체크 상태 불러오기 (기본값: false)
+                checkbox.checked = checkedStates[date]?.[index] || false;
+
+                // 체크박스 클릭 이벤트 → 상태 저장
+                checkbox.addEventListener("change", () => {
+                    const updatedStates = JSON.parse(localStorage.getItem("checkedStates")) || {};
+                    updatedStates[date] = updatedStates[date] || {};
+                    updatedStates[date][index] = checkbox.checked;
+                    localStorage.setItem("checkedStates", JSON.stringify(updatedStates));
+                });
+
+                li.prepend(checkbox);
+                li.append(task);
 
                 // 삭제 버튼 추가
                 const deleteButton = document.createElement("button");
                 deleteButton.textContent = "Delete";
                 deleteButton.classList.add("delete-btn");
-                deleteButton.onclick = () => deleteTask(date, index); //삭제
+                deleteButton.onclick = () => deleteTask(date, index);
                 li.appendChild(deleteButton);
-                // appendChild는 한 노드를 특정 부모노드의 자식 노드 리스트의 마지막 자식으로 추가
+
                 taskListElement.appendChild(li);
             });
 
-            if (dailyTasks.length === 0) {//비어 있다면
-                alert('일정이 없습니다');
+            if (dailyTasks.length === 0) {
+                alert("일정이 없습니다");
             } else {
-                alert('업데이트 되었습니다');
+                alert("업데이트 되었습니다");
             }
         }
+
 
         // ✅ 캘린더 렌더링 함수 (더블 클릭 이벤트 포함)
         const calendar = {
