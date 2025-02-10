@@ -35,21 +35,22 @@
         <div class="right">
             <div class="calendar">
                 <div class="calendar-header">
-                    <button id="prev" class="nav-btn">&lt;</button>
-                    <span id="month-year"></span>
-                    <button id="next" class="nav-btn">&gt;</button>
+                    <button id="prevBtn">&lt;</button>
+                    <span id="calendarTitle"></span>
+                    <button id="nextBtn">&gt;</button>
                 </div>
-                <div class="calendar-body">
-                    <div class="days">
-                        <span class="day">SUN</span>
-                        <span class="day">MON</span>
-                        <span class="day">TUE</span>
-                        <span class="day">WED</span>
-                        <span class="day">THU</span>
-                        <span class="day">FRI</span>
-                        <span class="day">SAT</span>
-                    </div>
-                    <div class="dates" id="dates"></div>
+                <div class="week">
+                    <div>Sun</div>
+                    <div>Mon</div>
+                    <div>Tue</div>
+                    <div>Wed</div>
+                    <div>Thu</div>
+                    <div>Fri</div>
+                    <div>Sat</div>
+                </div>
+                <div class="days"></div>
+                <div class="display-selected">
+                    <p class="selected"></p>
                 </div>
             </div>
         </div>
@@ -66,7 +67,6 @@
             body.style.backgroundImage = "url('Day.png')";
             const today = new Date();
             const todayString = `${today.getFullYear()}-${String(today.getMonth() + 1).padStart(2, "0")}-${String(today.getDate()).padStart(2, "0")}`;
-            showTasks(todayString);
         };
 
 
@@ -90,203 +90,96 @@
             });
         });
 
-        // ✅ 할 일 추가 함수
-        function addTask() {
-            const taskInput = document.getElementById("taskInput");
-            const task = taskInput.value.trim();
+        
+        // 달력 생성 부분
+        let display = document.querySelector('.display'),
+            prevBtn = document.querySelector('.left'),
+            nextBtn = document.querySelector('.right'),
+            days = document.querySelector('.days'),
+            selected = document.querySelector('.selected');
 
-            
-            if (!task) return alert("할 일을 입력하세요");//입력된 말이 없을 경우
+        // 자바스크립트에서 날짜 출력
+        let dateToday = new Date();
+        let year = dateToday.getFullYear();
+        let month = dateToday.getMonth();
 
-            // 현재 날짜 (기본값: 오늘 날짜)
-            const currentDate = new Date();
-            //dateString은 YYYY-MM-DD 형식의 문자열로 변환한다.
-            //getFullYear() 메서드는 주어진 날짜의 현지 시간 기준 연도를 반환 
-            //getMonth() 메서드는 Date 객체의 월 값을 현지 시간에 맞춰 반환합니다. 월은 0부터 시작합니다. -> 그래서 1을 더함
-            //getDate() 메서드는 주어진 날짜의 현지 시간 기준 일을 반환합니다.
-            //padStart() 메서드는 String 값의 메서드로, 결과 문자열이 주어진 길이에 도달할 때까지 이 문자열의 시작 부분에 다른 문자열을 (필요하다면 여러 번) 채운다.
-            const dateString = `${currentDate.getFullYear()}-${String(currentDate.getMonth() + 1).padStart(2, "0")}-${String(currentDate.getDate()).padStart(2, "0")}`;
-            console.log(`Adding task for date: ${dateString}, Task: ${task}`);  // 디버깅 출력
+        function displayCalendar() {
+            const firstDay = new Date(year, month, 1); // 첫날
+            const firstDayIdx = firstDay.getDay(); // 요일 월=1
+            const lastDay = new Date(year, month + 1, 0); // 현월의 마지막 날
+            const numberOfDays = lastDay.getDate(); // 마지막 날짜
 
-            // 로컬 스토리지는 문자열만 저장 가능하지만 우리는 배열 또는 객체형태로 저장하고 싶음
-            // 이때, JSON.stringify()를 사용하여 객체를 문자열로 변환해 저장하고,
-            // 다시 가져올 때 JSON.parse()를 사용하여 원래의 객체로 변환해야 합니다.
-            // ✅ 기존 할 일 목록 불러오기
-            const tasks = JSON.parse(localStorage.getItem("tasks")) || {};
-            const checkedStates = JSON.parse(localStorage.getItem("checkedStates")) || {};
-            updatedStates[date] = updatedStates[date] || [];
-            updatedStates[date][index] = checkbox.checked;
-            localStorage.setItem("checkedStates", JSON.stringify(updatedStates));   
-
-            // ✅ 해당 날짜의 배열이 없으면 새로 생성
-            tasks[dateString] = tasks[dateString] || [];
-            checkedStates[dateString] = checkedStates[dateString] || [];
-
-            // ✅ 새 할 일 추가 (체크박스 상태는 기본적으로 false)
-            tasks[dateString].push(task);
-            checkedStates[dateString].push(false);
-
-            // ✅ 로컬 스토리지에 저장
-            localStorage.setItem("tasks", JSON.stringify(tasks));
-            localStorage.setItem("checkedStates", JSON.stringify(checkedStates));
-
-            console.log("Updated tasks:", JSON.stringify(tasks));
-
-            // ✅ 입력창 초기화 후 목록 다시 표시
-            taskInput.value = "";
-            showTasks(dateString);
-        }
-
-        // ✅ 할 일 삭제 함수
-        function deleteTask(date, index, liElement) {
-            const tasks = JSON.parse(localStorage.getItem("tasks")) || {};
-            const checkedStates = JSON.parse(localStorage.getItem("checkedStates")) || {};
-            
-            if (tasks[date]) {
-                tasks[date].splice(index, 1);
-                checkedStates[date].splice(index, 1);
-
-                if (tasks[date].length === 0) delete tasks[date];
-                if (checkedStates[date].length === 0) delete checkedStates[date];
-
-                localStorage.setItem("tasks", JSON.stringify(tasks));
-                localStorage.setItem("checkedStates", JSON.stringify(checkedStates));
-
-                liElement.remove(); // ✅ DOM에서 직접 삭제
-            }
-        }
-
-        // ✅ Daily List 표시 함수
-        function showTasks(date) {
-            const taskListElement = document.getElementById("taskList");
-
-            // 로컬 스토리지에서 날짜별 할 일 불러오기
-            const tasks = JSON.parse(localStorage.getItem("tasks")) || {};
-            const dailyTasks = tasks[date] || [];
-            console.log(`Showing tasks for date: ${date}, Tasks:`, dailyTasks);
-
-            // 체크 상태 불러오기
-            const checkedStates = JSON.parse(localStorage.getItem("checkedStates")) || {};
-
-            // 기존 목록 초기화
-            taskListElement.innerHTML = "";
-
-            dailyTasks.forEach((task, index) => {
-                const li = document.createElement("li");
-
-                // 체크박스 추가
-                const checkbox = document.createElement("input");
-                checkbox.type = "checkbox";
-                checkbox.classList.add("task-checkbox");
-                checkbox.style.marginRight = "10px";
-                
-                // 체크 상태 불러오기 (기본값: false)
-                checkbox.checked = checkedStates[date]?.[index] || false;
-
-                // 체크박스 클릭 이벤트 → 상태 저장
-                checkbox.addEventListener("change", () => {
-                    const updatedStates = JSON.parse(localStorage.getItem("checkedStates")) || {};
-                    updatedStates[date] = updatedStates[date] || {};
-                    updatedStates[date][index] = checkbox.checked;
-                    localStorage.setItem("checkedStates", JSON.stringify(updatedStates));
-                });
-
-                li.prepend(checkbox);
-                li.append(task);
-
-                // 삭제 버튼 추가
-                const deleteButton = document.createElement("button");
-                deleteButton.textContent = "Delete";
-                deleteButton.classList.add("delete-btn");
-                deleteButton.onclick = () => deleteTask(date, index);
-                li.appendChild(deleteButton);
-
-                taskListElement.appendChild(li);
+            let formattedDate = dateToday.toLocaleString('en-US', {
+                year: "numeric",
+                month: "long",
+                timeZone: 'Asia/Seoul'
             });
+            display.innerHTML = formattedDate;
 
-            if (dailyTasks.length === 0 && !document.getElementById("taskList").hasChildNodes()) {
-               alert("일정이 없습니다");
+            days.innerHTML = ''; // 기존 날짜 초기화
+
+            // 빈 칸 채우기
+            for (let x = 0; x < firstDayIdx; x++) {
+                let div = document.createElement('div');
+                div.innerHTML = ' ';
+                days.appendChild(div);
             }
-            else {
-                alert("업데이트 되었습니다");
+
+            // 날짜 출력
+            for (let x = 1; x <= numberOfDays; x++) {
+                let div = document.createElement('div');
+                let currentDate = new Date(year, month, x);
+                div.dataset.date = currentDate.toDateString();
+                div.innerText = x;
+                days.appendChild(div);
+
+                // 오늘 날짜 확인
+                if (
+                    currentDate.getFullYear() === new Date().getFullYear() &&
+                    currentDate.getMonth() === new Date().getMonth() &&
+                    currentDate.getDate() === new Date().getDate()
+                ) {
+                    div.classList.add('current-date');
+                }
             }
+
+            displaySelected();
         }
 
+        function displaySelected() {
+            const daysEL = document.querySelectorAll('.days div');
+            daysEL.forEach(day => {
+                day.addEventListener('click', (e) => {
+                    const selectedDate = e.target.dataset.date;
+                    selected.innerText = `선택일: ${selectedDate}`;
+                });
+            });
+        }
 
-        // ✅ 캘린더 렌더링 함수 (클릭 이벤트 포함)
-        const calendar = {
-            currentDate: new Date(),
-            renderCalendar() {
-                const datesElement = document.getElementById("dates");
-                const monthYearElement = document.getElementById("month-year");
-
-                const currentYear = this.currentDate.getFullYear();
-                const currentMonth = this.currentDate.getMonth();
-
-                const monthNames = [
-                    "January", "February", "March", "April", "May",
-                    "June", "July", "August", "September", "October", "November", "December"
-                ];
-                monthYearElement.textContent = `${monthNames[currentMonth]} ${currentYear}`;
-
-                //Date 객체는 1970년 1월 1일 UTC(국제표준시) 자정으로부터 지난 시간을 밀리초로 나타내는 UNIX 타임스탬프를 포함한다.
-                const firstDay = new Date(currentYear, currentMonth, 1).getDay();
-                const lastDate = new Date(currentYear, currentMonth + 1, 0).getDate();
-
-                datesElement.innerHTML = ""; //초기화
-
-                // 현재 달 날짜 렌더링
-                for (let i = 1; i <= lastDate; i++) {
-
-                    // ✅ document.createElement("div")를 써야 하는 이유
-                    // 각 날짜를 개별적인 <div> 요소로 다룰 수 있음
-                    // → setAttribute(), classList.add(), textContent 등을 사용할 수 있음
-                    // 이벤트 핸들러를 개별적으로 추가할 수 있음
-                    // → 특정 날짜를 클릭했을 때 showTasks(dateString) 실행
-                    // CSS 스타일을 자유롭게 변경할 수 있음
-                    // → 오늘 날짜에 "today" 클래스를 추가하여 스타일을 다르게 적용 가능
-                    const date = document.createElement("div"); // ...위에 참고
-                    date.classList.add("date");
-
-                    const dateString = `${currentYear}-${String(currentMonth + 1).padStart(2, '0')}-${String(i).padStart(2, '0')}`;
-                    date.setAttribute("data-date", dateString);
-
-                    const today = new Date();
-                    const todayYear = today.getFullYear();
-                    const todayMonth = today.getMonth();
-                    const todayDate = today.getDate();
-
-                    if (i === todayDate && currentMonth === todayMonth && currentYear === todayYear) {
-                        date.classList.add("today");
-                    }
-
-                    date.textContent = i;
-
-                    // 날짜 클릭 이벤트 추가
-                    date.addEventListener("click", () => showTasks(dateString));
-                    datesElement.appendChild(date);
-                }
-            },
-        };
-
-        // ✅ 초기화
-        calendar.renderCalendar();
-
-        calendar.changeMonth = function (offset) {
-            this.currentDate.setMonth(this.currentDate.getMonth() + offset);
-            this.renderCalendar();
-        };
-
-
-        // 이전/다음 버튼 클릭 이벤트
-        document.getElementById("prev").addEventListener("click", () => calendar.changeMonth(-1));
-        document.getElementById("next").addEventListener("click", () => calendar.changeMonth(1));
-
-        // 추가 버튼 및 Enter 키 이벤트
-        document.getElementById("addButton").addEventListener("click", addTask);
-        document.getElementById("taskInput").addEventListener("keypress", (e) => {
-            if (e.key === "Enter") addTask();
+        prevBtn.addEventListener('click', () => {
+            if (month === 0) {
+                month = 11;
+                year -= 1;
+            } else {
+                month -= 1;
+            }
+            dateToday.setMonth(month);
+            displayCalendar();
         });
+
+        nextBtn.addEventListener('click', () => {
+            if (month === 11) {
+                month = 0;
+                year += 1;
+            } else {
+                month += 1;
+            }
+            dateToday.setMonth(month);
+            displayCalendar();
+        });
+
+        displayCalendar();
+
     </script>
 </body>
 </html>
