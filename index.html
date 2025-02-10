@@ -40,13 +40,13 @@
                     <button id="nextBtn">&gt;</button>
                 </div>
                 <div class="week">
-                    <div>Sun</div>
-                    <div>Mon</div>
-                    <div>Tue</div>
-                    <div>Wed</div>
-                    <div>Thu</div>
-                    <div>Fri</div>
-                    <div>Sat</div>
+                    <div>월</div>
+                    <div>화</div>
+                    <div>수</div>
+                    <div>목</div>
+                    <div>금</div>
+                    <div>토</div>
+                    <div>일</div>
                 </div>
                 <div class="days"></div>
                 <div class="display-selected">
@@ -90,50 +90,53 @@
             });
         });
 
-        
-        // 달력 생성 부분
-        let display = document.querySelector('.display'),
-            prevBtn = document.querySelector('.left'),
-            nextBtn = document.querySelector('.right'),
-            days = document.querySelector('.days'),
-            selected = document.querySelector('.selected');
 
-        // 자바스크립트에서 날짜 출력
+        // 달력 생성 부분
+        // ✅ 달력 요소 올바르게 선택
+        const calendarTitle = document.getElementById('calendarTitle');
+        const prevBtn = document.getElementById('prevBtn');
+        const nextBtn = document.getElementById('nextBtn');
+        const days = document.querySelector('.days');
+        const selected = document.querySelector('.selected');
+
+        // ✅ 날짜 설정
         let dateToday = new Date();
         let year = dateToday.getFullYear();
         let month = dateToday.getMonth();
 
+        // 📌 달력 출력 함수
         function displayCalendar() {
             const firstDay = new Date(year, month, 1); // 첫날
-            const firstDayIdx = firstDay.getDay(); // 요일 월=1
-            const lastDay = new Date(year, month + 1, 0); // 현월의 마지막 날
+            const firstDayIdx = firstDay.getDay(); // 요일 (일=0, 월=1)
+            const lastDay = new Date(year, month + 1, 0); // 마지막 날
             const numberOfDays = lastDay.getDate(); // 마지막 날짜
 
+            // ✅ 달력 제목 갱신
             let formattedDate = dateToday.toLocaleString('en-US', {
                 year: "numeric",
                 month: "long",
                 timeZone: 'Asia/Seoul'
             });
-            display.innerHTML = formattedDate;
+            calendarTitle.innerText = formattedDate;
 
             days.innerHTML = ''; // 기존 날짜 초기화
 
             // 빈 칸 채우기
             for (let x = 0; x < firstDayIdx; x++) {
                 let div = document.createElement('div');
-                div.innerHTML = ' ';
+                div.classList.add('empty');
                 days.appendChild(div);
             }
 
-            // 날짜 출력
+            // 날짜 채우기
             for (let x = 1; x <= numberOfDays; x++) {
                 let div = document.createElement('div');
                 let currentDate = new Date(year, month, x);
                 div.dataset.date = currentDate.toDateString();
                 div.innerText = x;
-                days.appendChild(div);
+                div.classList.add('day');
 
-                // 오늘 날짜 확인
+                // 오늘 날짜 강조
                 if (
                     currentDate.getFullYear() === new Date().getFullYear() &&
                     currentDate.getMonth() === new Date().getMonth() &&
@@ -141,21 +144,25 @@
                 ) {
                     div.classList.add('current-date');
                 }
+
+                days.appendChild(div);
             }
 
             displaySelected();
         }
 
+        // 📌 날짜 선택 시 표시
         function displaySelected() {
-            const daysEL = document.querySelectorAll('.days div');
-            daysEL.forEach(day => {
+            const dayElements = document.querySelectorAll('.days .day');
+            dayElements.forEach(day => {
                 day.addEventListener('click', (e) => {
                     const selectedDate = e.target.dataset.date;
-                    selected.innerText = `선택일: ${selectedDate}`;
+                    selected.innerText = `Date: ${selectedDate}`;
                 });
             });
         }
 
+        // 📌 이전 달 보기
         prevBtn.addEventListener('click', () => {
             if (month === 0) {
                 month = 11;
@@ -163,10 +170,10 @@
             } else {
                 month -= 1;
             }
-            dateToday.setMonth(month);
             displayCalendar();
         });
 
+        // 📌 다음 달 보기
         nextBtn.addEventListener('click', () => {
             if (month === 11) {
                 month = 0;
@@ -174,11 +181,12 @@
             } else {
                 month += 1;
             }
-            dateToday.setMonth(month);
             displayCalendar();
         });
 
+        // ✅ 처음 실행 시 달력 표시
         displayCalendar();
+
 
     </script>
 </body>
