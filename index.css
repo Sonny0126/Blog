@@ -1,42 +1,75 @@
 /* =========================
     전체 컨테이너 스타일
 =========================== */
+
+@font-face {
+    font-family: 'Font'; 
+    src: url('Font.ttf') format('truetype'); /*Font.ttf참조 */
+}
+
+body {
+    background-color: #FAF3F0; /* 부드러운 배경색 */
+    background-image: url('Day.png');
+    background-size: 100%;
+    background-repeat: no-repeat;
+    background-position: bottom center; 
+    margin: 0;
+    padding: 0;
+    font-family: 'CustomFont', sans-serif; 
+}
+
 .container {
     display: flex;
     justify-content: space-between;
     align-items: flex-start;
-    width: 100%;
+    width: 90%;
     margin: 20px auto;
     gap: 20px;
+    font-family: 'CustomFont', sans-serif; 
 }
 
 /* =========================
     왼쪽 부분 스타일
 =========================== */
-.left {
-    width: 10%;
-    background: #f4f4f4;
-    padding: 20px;
-    border-radius: 10px;
+
+.left-container {
     text-align: center;
+    margin-top: 20px;
 }
 
-.left button {
+.leftup {
+    width: 30%;
+    background: #ffffff;
+    padding: 20px;
+    border-radius: 15px;
+    text-align: center;
+    box-shadow: 0 4px 10px rgba(0, 0, 0, 0.1);
+}
+
+.leftup h1 {
+    font-size: 1.8em;
+    font-weight: bold;
+    color: #2c3e50;
+    margin-bottom: 20px;
+}
+
+.leftup button {
     display: block;
     width: 100%;
-    padding: 10px;
+    padding: 12px;
     margin: 10px 0;
     font-size: 1em;
     background: #000000;
     color: white;
     border: none;
-    border-radius: 5px;
+    border-radius: 25px; /* 둥근 버튼 */
     cursor: pointer;
-    transition: background 0.3s;
+    transition: background 0.3s ease-in-out;
+    font-family: 'CustomFont', sans-serif; 
 }
 
-.left button:hover {
-    background: #cc2525;
+.leftup button:hover {
+    background: #e74c3c;
 }
 
 /* 밤낮 조절 버튼 */
@@ -59,29 +92,26 @@
 }
 
 #switch-img {
-    width: 50px;  /* 원하는 크기로 조정 */
-    height: 50px; /* 원하는 크기로 조정 */
+    width: 50px;
+    height: 50px;
 }
-
 
 /* =========================
     오른쪽 부분 스타일 (캘린더)
 =========================== */
-
-/* 오른쪽 영역 */
-.right {
-    width: 100%;
-    padding: 20px;
+.leftdown {
+    margin-top: 20px;
 }
 
 /* 🗓️ 달력 스타일 */
 .calendar {
     width: 100%;
     text-align: center;
-    background: #fff;
-    border-radius: 10px;
-    padding: 10px;
-    box-shadow: 0 2px 10px rgba(0, 0, 0, 0.1);
+    background: #ffffff;
+    border-radius: 15px;
+    padding: 15px;
+    box-shadow: 0 4px 10px rgba(0, 0, 0, 0.1);
+    font-family: 'CustomFont', sans-serif; 
 }
 
 /* 월/연도 타이틀 & 버튼 */
@@ -112,7 +142,7 @@
     grid-template-columns: repeat(7, 1fr);
     background: #3498db;
     color: white;
-    padding: 5px;
+    padding: 8px;
     font-weight: bold;
     border-radius: 5px;
 }
@@ -126,7 +156,7 @@
 }
 
 .days div {
-    padding: 10px;
+    padding: 12px;
     border-radius: 5px;
     text-align: center;
     cursor: pointer;
@@ -138,136 +168,152 @@
     background: #e74c3c;
     color: white;
     font-weight: bold;
+    border-radius: 50%;
 }
 
 /* 선택된 날짜 스타일 */
 .days div:hover {
-    background: #1abc9c;
+    background: #2ecc71;
     color: white;
 }
 
-.selected {
-    margin-top: 10px;
-    font-size: 16px;
-    font-weight: bold;
-    color: #2c3e50;
-}
-
-/* 빈 칸 스타일 */
-.empty {
-    background: transparent;
-    cursor: default;
-}
-
 /* =========================
-      아래 부분
+      할 일 리스트 스타일
 =========================== */
-
-.bottom {
-    display: flex;
-    flex-direction: column;
-    align-items: center;
-    margin: 0;
-    min-height: 100vh;
-}
-
-h1 {
-    margin: 0;
-    margin-bottom: 12px;
+.right-container {
+    text-align: center;
+    margin-top: 20px;
 }
 
 .todo-list {
-    max-width: 400px;
     width: 100%;
     background-color: #FFE8AD;
-    text-align: center;
     padding: 20px;
+    box-shadow: 0 4px 10px rgba(0, 0, 0, 0.1);
 }
 
-#inputField #todoInput {
-    width: calc(100% - 45px);
-    border: 1px solid #eee;
-    border-radius: 4px;
+/* 입력 필드 스타일 */
+#inputField {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    margin-bottom: 10px;
+}
+
+#todoInput {
+    width: 80%;
+    border: none;
+    border-radius: 20px;
     padding: 10px;
-}
-
-#inputField #todoInput:focus {
+    font-size: 16px;
     outline: none;
 }
 
-#inputField #addBtn {
-    position: relative;
-    width: 35px;
-    height: 35px;
+/* 추가 버튼 스타일 */
+#addBtn {
+    width: 40px;
+    height: 40px;
+    background: #2c3e50;
     border: none;
-    background-color: #242423;
-    border-radius: 4px;
+    border-radius: 50%;
     cursor: pointer;
-    vertical-align: middle;
+    position: relative; /* 가상 요소 배치를 위해 필요 */
+    display: flex;
+    align-items: center;
+    justify-content: center;
 }
 
-#inputField #addBtn span {
+/* "+" 모양의 가로 바 */
+#addBtn::before {
+    content: "";
+    position: absolute;
+    width: 50%;  /* 버튼 크기의 절반 */
+    height: 3px;  /* 두께 */
+    background-color: white;  /* "+" 색상 */
+    top: 50%;
+    left: 50%;
+    transform: translate(-50%, -50%);
+}
+
+/* "+" 모양의 세로 바 */
+#addBtn::after {
+    content: "";
+    position: absolute;
+    width: 3px;  /* 두께 */
+    height: 50%;  /* 버튼 크기의 절반 */
+    background-color: white;  /* "+" 색상 */
+    top: 50%;
+    left: 50%;
+    transform: translate(-50%, -50%);
+}
+
+
+/* "+" 모양의 가로 바 */
+#addBtn::before {
+    content: "";
+    position: absolute;
+    width: 50%;  /* 버튼 크기의 절반 */
+    height: 3px;  /* 두께 */
+    background-color: white;  /* "+" 색상 */
+    top: 50%;
+    left: 50%;
+    transform: translate(-50%, -50%);
+}
+
+#addBtn span {
     display: block;
     width: 2px;
     height: 15px;
-    background-color: #FFE8AD;
+    background-color: white;
     position: absolute;
     transform: translate(-50%,-50%);
     top: 50%;
     left: 50%;
 }
-#inputField #addBtn span:last-child {
+
+#addBtn span:last-child {
     transform: translate(-50%,-50%) rotate(-90deg);
 }
 
+/* 할 일 목록 스타일 */
 #todoList {
     list-style: none;
-    margin: 0;
-    padding: 10px;
-    text-align: left;
+    padding: 0;
 }
 
 #todoList li {
-    padding: 10px 0;
-    user-select: none;
-}
-
-#todoList button {
-    width: 15px;
-    height: 15px;
-    background-color: #fff;
-    margin-right: 8px;
-    border: none;
-    border-radius: 4px;
-    cursor: pointer;
+    padding: 12px;
+    background: white;
+    border-radius: 5px;
+    margin: 5px 0;
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
 }
 
 #todoList li.complete {
     text-decoration: line-through;
-    color: rgb(155, 155, 155);
+    color: gray;
 }
 
-#todoList li.complete button::after {
-    content: "";
-    display: block;
-    width: 5px;
-    height: 10px;
-    transform: translate(-2px, -2px) rotate(45deg);
-    border-right: 2px solid #f1b116;
-    border-bottom: 2px solid #f1b116;
-}
-
+/* 전체 삭제 버튼 */
 .delete-btn-wrap button {
-    cursor: pointer;
+    width: 100%;
+    padding: 10px;
     border: none;
-    border-radius: 8px;
-    background-color: #242423;
-    color: #fff;
-    padding: 8px;
+    border-radius: 5px;
+    background-color: #e74c3c;
+    color: white;
+    cursor: pointer;
+    transition: background 0.3s;
+}
+
+.delete-btn-wrap button:hover {
+    background-color: #c0392b;
 }
 
 /* =========================
-    반응형 디자인 (모바일 최적화)
+    반응형 디자인
 =========================== */
 @media (max-width: 768px) {
     .container {
@@ -275,18 +321,8 @@ h1 {
         align-items: center;
     }
 
-    .left,.right .bottom {
+    .left-container, .right-container {
         width: 90%;
         margin-bottom: 20px;
     }
-}
-
-/* =========================
-    전체 화면 부분
-=========================== */
-
-body {
-    background-image: url('Day.png'); /* 또는 Night.png */
-    background-size: cover;  /* 배경화면을 화면에 꽉 차게 조정 */
-    background-repeat: no-repeat; /* 배경 반복 제거 */
 }

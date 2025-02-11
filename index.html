@@ -7,50 +7,53 @@
 </head>
 <body>
     <div class="container">
-        <!-- 왼쪽 영역 -->
-        <div class="left">
-            <div class="OnOff">
-                <h1>SON</h1>
-                <button id="switch">
-                    <img id="switch-img" src="off.png" alt="스위치">
-                </button>
-            </div>    
-            <div class="button-group">
-                <button id="button1">Liverpool</button>
-                <button id="button2">Bitflow</button>
-                <button id="button3">Notion</button>
-                <button id="button4">Naver-Blog</button>
+        <!-- 전체 영역 -->
+        <div class="left-container">
+            <!-- 왼쪽 영역 -->
+            <div class="leftup">
+                <div class="OnOff">
+                    <h1>손 승 민</h1>
+                    <button id="switch">
+                        <img id="switch-img" src="off.png" alt="스위치">
+                    </button>
+                </div>
+                <div class="button-group">
+                    <button id="button1">Liverpool</button>
+                    <button id="button2">Bitflow</button>
+                    <button id="button3">Notion</button>
+                    <button id="button4">Naver-Blog</button>
+                </div>
             </div>
-        </div>
-    
-        <!-- 중앙 영역 -->
-        <div class="center"></div>
-            <div class="calendar">
-                <div class="calendar-header">
-                    <button id="prevBtn">&lt;</button>
-                    <span id="calendarTitle"></span>
-                    <button id="nextBtn">&gt;</button>
-                </div>
-                <div class="week">
-                    <div>월</div>
-                    <div>화</div>
-                    <div>수</div>
-                    <div>목</div>
-                    <div>금</div>
-                    <div>토</div>
-                    <div>일</div>
-                </div>
-                <div class="days"></div>
-                <div class="display-selected">
-                    <p class="selected"></p>
+
+            <!-- 오른쪽 영역 -->
+            <div class="leftdown">
+                <div class="calendar">
+                    <div class="calendar-header">
+                        <button id="prevBtn">&lt;</button>
+                        <span id="calendarTitle"></span>
+                        <button id="nextBtn">&gt;</button>
+                    </div>
+                    <div class="week">
+                        <div>월</div>
+                        <div>화</div>
+                        <div>수</div>
+                        <div>목</div>
+                        <div>금</div>
+                        <div>토</div>
+                        <div>일</div>
+                    </div>
+                    <div class="days"></div>
+                    <div class="display-selected">
+                        <p class="selected"></p>
+                    </div>
                 </div>
             </div>
         </div>
 
-        <!-- 아래 영역 -->
-        <div class="bottom">
+        <!-- 하단 영역 -->
+        <div class="right-container">
             <div class="todo-list">
-                <h1>Todo</h1>
+                <h1>오늘 할 일</h1>
                 <div id="inputField">
                     <input type="text" id="todoInput" placeholder="할 일 추가하기" onkeydown="keyCodeCheck(event)">
                     <button type="button" id="addBtn">
@@ -58,15 +61,12 @@
                         <span></span>
                     </button>
                 </div>
-                <ul id="todoList">
-                    <!-- ul이 할일 자바스크립트로 추가 -->
-                    
-                </ul>
+                <ul id="todoList"></ul>
                 <div class="delete-btn-wrap">
                     <button onclick="deleteAll();">전체 삭제</button>
                 </div>
             </div>
-
+        </div>
     </div>
 
     <script src="index.js"></script>
