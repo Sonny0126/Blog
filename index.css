@@ -63,120 +63,14 @@
     height: 50px; /* 원하는 크기로 조정 */
 }
 
-/* =========================
-    가운데 부분 스타일
-=========================== */
-.center {
-    width: 100%;
-    background: #ffffff;
-    padding: 20px;
-    border-radius: 10px;
-    text-align: center;
-    box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
-}
-
-.center h2 {
-    font-size: 1.8em;
-    margin-bottom: 15px;
-}
-
-#taskInput {
-    width: 80%;
-    padding: 10px;
-    font-size: 1em;
-    margin-bottom: 10px;
-    border: 1px solid #ddd;
-    border-radius: 5px;
-}
-
-#addButton {
-    padding: 10px 15px;
-    font-size: 1em;
-    background: #4CAF50;
-    color: white;
-    border: none;
-    border-radius: 5px;
-    cursor: pointer;
-    transition: background 0.3s;
-}
-
-#addButton:hover {
-    background: #388E3C;
-}
-
-#taskList {
-    list-style: none;
-    padding: 0;
-    text-align: left;
-    margin-top: 10px;
-}
-
-#taskList li {
-    background: #f9f9f9;
-    padding: 10px;
-    margin: 5px 0;
-    border-radius: 5px;
-    display: flex;
-    justify-content: space-between;
-    align-items: center;
-}
-
-/* 기본 체크박스 스타일 숨기기 */
-.task-checkbox {
-    appearance: none; /* 기본 체크박스 제거 */
-    width: 20px; /* 체크박스 너비 */
-    height: 20px; /* 체크박스 높이 */
-    border: 2px solid green; /* 테두리 색상 */
-    border-radius: 5px; /* 둥근 모서리 */
-    cursor: pointer; /* 클릭 가능 */
-    display: inline-flex; /* 중앙 정렬을 위해 flex 사용 */
-    align-items: center; /* 수직 중앙 정렬 */
-    justify-content: center; /* 수평 중앙 정렬 */
-    vertical-align: middle; /* 텍스트와 정렬 */
-    position: relative; /* ::after에 영향을 주기 위해 position 설정 */
-}
-
-/* 체크되었을 때 ✅ 아이콘 표시 */
-.task-checkbox:checked::after {
-    content: "✅"; /* 체크 표시 */
-    font-size: 14px; /* 아이콘 크기 조정 */
-    display: block; /* 표시 설정 */
-    text-align: center; /* 가운데 정렬 */
-    color: green; /* 아이콘 색상 */
-    position: absolute; /* 아이콘 위치 고정 */
-    top: 50%; /* 수직 중앙 정렬 */
-    left: 50%; /* 수평 중앙 정렬 */
-    transform: translate(-50%, -50%); /* 정렬 보정 */
-}
-
-
-.delete-btn {
-    background: #ff3030;
-    color: white;
-    border: none;
-    padding: 5px 10px;
-    border-radius: 3px;
-    cursor: pointer;
-    font-size: 0.8em;
-}
 
 /* =========================
     오른쪽 부분 스타일 (캘린더)
 =========================== */
 
-.right {
-    width: 50%;
-    text-align: center;
-    padding: 20px;
-    background: #ffffff;
-    border-radius: 10px;
-    box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
-    box-sizing: border-box;
-}
-
 /* 오른쪽 영역 */
 .right {
-    width: 25%;
+    width: 100%;
     padding: 20px;
 }
 
@@ -265,6 +159,112 @@
     cursor: default;
 }
 
+/* =========================
+      아래 부분
+=========================== */
+
+.bottom {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    margin: 0;
+    min-height: 100vh;
+}
+
+h1 {
+    margin: 0;
+    margin-bottom: 12px;
+}
+
+.todo-list {
+    max-width: 400px;
+    width: 100%;
+    background-color: #FFE8AD;
+    text-align: center;
+    padding: 20px;
+}
+
+#inputField #todoInput {
+    width: calc(100% - 45px);
+    border: 1px solid #eee;
+    border-radius: 4px;
+    padding: 10px;
+}
+
+#inputField #todoInput:focus {
+    outline: none;
+}
+
+#inputField #addBtn {
+    position: relative;
+    width: 35px;
+    height: 35px;
+    border: none;
+    background-color: #242423;
+    border-radius: 4px;
+    cursor: pointer;
+    vertical-align: middle;
+}
+
+#inputField #addBtn span {
+    display: block;
+    width: 2px;
+    height: 15px;
+    background-color: #FFE8AD;
+    position: absolute;
+    transform: translate(-50%,-50%);
+    top: 50%;
+    left: 50%;
+}
+#inputField #addBtn span:last-child {
+    transform: translate(-50%,-50%) rotate(-90deg);
+}
+
+#todoList {
+    list-style: none;
+    margin: 0;
+    padding: 10px;
+    text-align: left;
+}
+
+#todoList li {
+    padding: 10px 0;
+    user-select: none;
+}
+
+#todoList button {
+    width: 15px;
+    height: 15px;
+    background-color: #fff;
+    margin-right: 8px;
+    border: none;
+    border-radius: 4px;
+    cursor: pointer;
+}
+
+#todoList li.complete {
+    text-decoration: line-through;
+    color: rgb(155, 155, 155);
+}
+
+#todoList li.complete button::after {
+    content: "";
+    display: block;
+    width: 5px;
+    height: 10px;
+    transform: translate(-2px, -2px) rotate(45deg);
+    border-right: 2px solid #f1b116;
+    border-bottom: 2px solid #f1b116;
+}
+
+.delete-btn-wrap button {
+    cursor: pointer;
+    border: none;
+    border-radius: 8px;
+    background-color: #242423;
+    color: #fff;
+    padding: 8px;
+}
 
 /* =========================
     반응형 디자인 (모바일 최적화)
@@ -275,7 +275,7 @@
         align-items: center;
     }
 
-    .left, .center, .right {
+    .left,.right .bottom {
         width: 90%;
         margin-bottom: 20px;
     }

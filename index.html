@@ -1,5 +1,5 @@
 <!DOCTYPE html>
-<html lang="en">
+<html lang="ko">
 <head>
     <meta charset="utf-8">
     <title>Dashboard</title>
@@ -24,15 +24,7 @@
         </div>
     
         <!-- 중앙 영역 -->
-        <div class="center">
-            <h2>Daily List</h2>
-            <input type="text" id="taskInput" placeholder="What are you going to do?">
-            <button id="addButton">Add</button>
-            <ul id="taskList"></ul>
-        </div>
-    
-        <!-- 오른쪽 영역 -->
-        <div class="right">
+        <div class="center"></div>
             <div class="calendar">
                 <div class="calendar-header">
                     <button id="prevBtn">&lt;</button>
@@ -54,140 +46,29 @@
                 </div>
             </div>
         </div>
-        
-    </div>    
 
-    <script>
-        // ✅ 밤낮 조절 버튼 기능
-        const switchButton = document.getElementById('switch');
-        const switchImg = document.getElementById('switch-img');
-        const body = document.body;
+        <!-- 아래 영역 -->
+        <div class="bottom">
+            <div class="todo-list">
+                <h1>Todo</h1>
+                <div id="inputField">
+                    <input type="text" id="todoInput" placeholder="할 일 추가하기" onkeydown="keyCodeCheck(event)">
+                    <button type="button" id="addBtn">
+                        <span></span>
+                        <span></span>
+                    </button>
+                </div>
+                <ul id="todoList">
+                    <!-- ul이 할일 자바스크립트로 추가 -->
+                    
+                </ul>
+                <div class="delete-btn-wrap">
+                    <button onclick="deleteAll();">전체 삭제</button>
+                </div>
+            </div>
 
-        window.onload = () => {
-            body.style.backgroundImage = "url('Day.png')";
-            const today = new Date();
-            const todayString = `${today.getFullYear()}-${String(today.getMonth() + 1).padStart(2, "0")}-${String(today.getDate()).padStart(2, "0")}`;
-        };
+    </div>
 
-
-        switchButton.addEventListener('click', () => {
-            const isNight = switchImg.getAttribute('src') === 'off.png';//off 이미지가 눌리면
-            body.style.backgroundImage = isNight ? "url('Night.png')" : "url('Day.png')";//밤이라면 night, 아니라면 day
-            switchImg.setAttribute('src', isNight ? 'on.png' : 'off.png');//밤이라면 on.png, 아니라면, off.png
-        });
-
-        // ✅ 페이지 이동 버튼 기능
-        const pageLinks = {
-            button1: 'https://sonny0126.github.io/Web/',
-            button2: 'https://sonny0126.github.io/BitFlow/',
-            button3: 'https://www.notion.so/Son-e53d58b3025f42d68700120ed5c20715',
-            button4: 'https://blog.naver.com/chewypig'
-        };
-
-        Object.keys(pageLinks).forEach(id => {
-            document.getElementById(id).addEventListener('click', () => {
-                window.location.href = pageLinks[id]; // 버튼 클릭 시 해당 링크로 이동
-            });
-        });
-
-
-        // 달력 생성 부분
-        // ✅ 달력 요소 올바르게 선택
-        const calendarTitle = document.getElementById('calendarTitle');
-        const prevBtn = document.getElementById('prevBtn');
-        const nextBtn = document.getElementById('nextBtn');
-        const days = document.querySelector('.days');
-        const selected = document.querySelector('.selected');
-
-        // ✅ 날짜 설정
-        let dateToday = new Date();
-        let year = dateToday.getFullYear();
-        let month = dateToday.getMonth();
-
-        // 📌 달력 출력 함수
-        function displayCalendar() {
-            const firstDay = new Date(year, month, 1); // 첫날
-            const firstDayIdx = firstDay.getDay(); // 요일 (일=0, 월=1)
-            const lastDay = new Date(year, month + 1, 0); // 마지막 날
-            const numberOfDays = lastDay.getDate(); // 마지막 날짜
-
-            // ✅ 달력 제목 갱신
-            let formattedDate = dateToday.toLocaleString('en-US', {
-                year: "numeric",
-                month: "long",
-                timeZone: 'Asia/Seoul'
-            });
-            calendarTitle.innerText = formattedDate;
-
-            days.innerHTML = ''; // 기존 날짜 초기화
-
-            // 빈 칸 채우기
-            for (let x = 0; x < firstDayIdx; x++) {
-                let div = document.createElement('div');
-                div.classList.add('empty');
-                days.appendChild(div);
-            }
-
-            // 날짜 채우기
-            for (let x = 1; x <= numberOfDays; x++) {
-                let div = document.createElement('div');
-                let currentDate = new Date(year, month, x);
-                div.dataset.date = currentDate.toDateString();
-                div.innerText = x;
-                div.classList.add('day');
-
-                // 오늘 날짜 강조
-                if (
-                    currentDate.getFullYear() === new Date().getFullYear() &&
-                    currentDate.getMonth() === new Date().getMonth() &&
-                    currentDate.getDate() === new Date().getDate()
-                ) {
-                    div.classList.add('current-date');
-                }
-
-                days.appendChild(div);
-            }
-
-            displaySelected();
-        }
-
-        // 📌 날짜 선택 시 표시
-        function displaySelected() {
-            const dayElements = document.querySelectorAll('.days .day');
-            dayElements.forEach(day => {
-                day.addEventListener('click', (e) => {
-                    const selectedDate = e.target.dataset.date;
-                    selected.innerText = `Date: ${selectedDate}`;
-                });
-            });
-        }
-
-        // 📌 이전 달 보기
-        prevBtn.addEventListener('click', () => {
-            if (month === 0) {
-                month = 11;
-                year -= 1;
-            } else {
-                month -= 1;
-            }
-            displayCalendar();
-        });
-
-        // 📌 다음 달 보기
-        nextBtn.addEventListener('click', () => {
-            if (month === 11) {
-                month = 0;
-                year += 1;
-            } else {
-                month += 1;
-            }
-            displayCalendar();
-        });
-
-        // ✅ 처음 실행 시 달력 표시
-        displayCalendar();
-
-
-    </script>
+    <script src="index.js"></script>
 </body>
 </html>
