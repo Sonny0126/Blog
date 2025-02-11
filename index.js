@@ -126,7 +126,7 @@ addBtn.addEventListener('click', () => { // + 버튼으로 추가
 
 const savedTodoList =JSON.parse(localStorage.getItem('saved-items'));
 
-if(savedTodoList){//로컬데이터가 존재하면 실행행
+if(savedTodoList){//로컬데이터가 존재하면 실행
   for(let i=0; i<savedTodoList.length; i++){
     createTodo(savedTodoList[i]);
   }
