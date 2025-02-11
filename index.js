@@ -7,7 +7,7 @@ const switchImg = document.getElementById('switch-img');
 const body = document.body;
 
 window.onload = () => {
-    body.style.backgroundImage = "url('image/Day.png')";
+    body.style.backgroundImage = "url('image/Night.png')";
     displayCalendar();
 };
 
@@ -203,15 +203,43 @@ function createTodo (storageData) { // 할 일 추가 기능
 ///   MUSIC   /////
 ///////////////////
 
-document.querySelector('.music').addEventListener('click', () => {
-  const audio = document.getElementById('audioPlayer');
-  const buttonImage = document.getElementById('Btnimage');
+// 유튜브 IFrame API 동적으로 로드하는 함수
+function loadYouTubeAPI() {
+  const script = document.createElement('script');
+  script.src = 'https://www.youtube.com/iframe_api'; // 유튜브 API 스크립트 URL
+  document.head.appendChild(script); // 헤드에 스크립트 추가
+}
 
-  if (buttonImage.src.includes("image/play.png")) {
-    audio.play();
-    buttonImage.src = "image/pause.png";
-  } else {
-    audio.pause();
-    buttonImage.src = "image/play.png";
-  }
+// 유튜브 플레이어를 초기화하는 함수
+let player;
+function onYouTubeIframeAPIReady() {
+  player = new YT.Player('youtubePlayer', {
+      height: '200',
+      width: '100%',
+      videoId: 'hxktjr-wQa0', // 유튜브 영상 ID // 한로로 노래 클립
+      playerVars: {
+          'playsinline': 1,
+          'controls': 0, // 컨트롤러 숨김
+          'showinfo': 0,
+          'modestbranding': 1
+      }
+  });
+}
+
+// 재생/정지 버튼 처리
+document.addEventListener('DOMContentLoaded', () => {
+  document.getElementById('Btnimage').addEventListener('click', () => {
+      const buttonImage = document.getElementById('Btnimage');
+
+      if (player.getPlayerState() !== 1) { // 재생 중이 아니면 실행
+          player.playVideo();
+          buttonImage.src = "image/pause.png"; // 재생 버튼을 일시 정지 버튼으로 변경
+      } else { // 이미 재생 중이면 멈춤
+          player.pauseVideo();
+          buttonImage.src = "image/play.png"; // 일시 정지 버튼을 재생 버튼으로 변경
+      }
+  });
+
+  // 유튜브 API 스크립트 로드
+  loadYouTubeAPI();
 });

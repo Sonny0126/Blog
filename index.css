@@ -9,7 +9,7 @@
 
 body {
     background-color: #FAF3F0; /* 부드러운 배경색 */
-    background-image: url('image/Day.png');
+    background-image: url('image/Night.png');
     background-size: 100%;
     background-repeat: no-repeat;
     background-position: bottom center; 
@@ -38,7 +38,7 @@ body {
 }
 
 .leftup {
-    width: 30%;
+    width: 50%;
     background: #ffffff;
     padding: 20px;
     border-radius: 15px;
@@ -186,6 +186,7 @@ body {
     margin-top: 30px;
     background-color: #FFE8AD;
     border-radius: 5%;
+    text-align: center;
     padding: 20px;
     box-shadow: 0 4px 10px rgba(0, 0, 0, 0.1);
 }
@@ -313,43 +314,40 @@ body {
 /* 🎵 뮤직 플레이어 스타일 (플레이리스트 디자인) */
 .music {
     position: absolute;
-    top: 5%; /* 상단에서 10% 떨어진 위치 */
+    top: 5%;
     left: 50%;
-    transform: translateX(-55%); /* 가로축 가운데 정렬 */
-    width: 1200px; /* 적절한 크기로 조정 */
-    height: 200px; /* 높이 조정 */
-    background: rgba(255, 255, 255, 0.9); /* 반투명 배경 */
-    border-radius: 15px; /* 부드러운 모서리 */
+    transform: translateX(-50%);
+    width: 1000px;;
+    height: 400px;
+    background: #ffffff;
+    border-radius: 15px;
     display: flex;
-    flex-direction: column; /* 세로 정렬 */
+    flex-direction: column;
     align-items: center;
     justify-content: center;
-    box-shadow: 0 4px 15px rgba(0, 0, 0, 0.2); /* 그림자 효과 */
     padding: 15px;
 }
 
-/* 🎵 앨범 아트 스타일 */
-.music img.album-art {
-    width: 80px;
-    height: 80px;
+/* 유튜브 플레이어 크기 조정 */
+#youtubePlayer {
+    width: 100%;
+    height: 500px;
     border-radius: 10px;
-    margin-bottom: 10px;
 }
 
-/* 🎵 노래 제목 스타일 */
-.music .song-title {
+/* 노래 제목 스타일 */
+.song-title {
     font-size: 18px;
     font-weight: bold;
     color: #333;
-    margin-bottom: 10px;
+    margin-top: 10px;
 }
 
-/* 🎵 버튼 이미지 스타일 */
+/* 플레이 버튼 */
 #Btnimage {
-    width: 40px; /* 버튼 크기 조정 */
+    width: 40px;
     cursor: pointer;
 }
-
 
 
 /* =========================
