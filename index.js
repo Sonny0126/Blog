@@ -1,5 +1,5 @@
 ///////////////////
-//     LEFT   /////
+///   LEFTUP    ///
 ///////////////////
 // ✅ 밤낮 조절 버튼 기능
 const switchButton = document.getElementById('switch');
@@ -7,14 +7,14 @@ const switchImg = document.getElementById('switch-img');
 const body = document.body;
 
 window.onload = () => {
-    body.style.backgroundImage = "url('Day.png')";
+    body.style.backgroundImage = "url('image/Day.png')";
     displayCalendar();
 };
 
 switchButton.addEventListener('click', () => {
-    const isNight = switchImg.getAttribute('src') === 'off.png';
-    body.style.backgroundImage = isNight ? "url('Night.png')" : "url('Day.png')";
-    switchImg.setAttribute('src', isNight ? 'on.png' : 'off.png');
+    const isNight = switchImg.getAttribute('src') === 'image/off.png';
+    body.style.backgroundImage = isNight ? "url('image/Night.png')" : "url('image/Day.png')";
+    switchImg.setAttribute('src', isNight ? 'image/on.png' : 'image/off.png');
 });
 
 // ✅ 페이지 이동 버튼 기능
@@ -31,9 +31,9 @@ Object.keys(pageLinks).forEach(id => {
     });
 });
 
-///////////////////
-//     RIGHT   ////
-///////////////////
+//////////////////
+///  calendar  ///
+//////////////////
 // ✅ 달력 기능
 const calendarTitle = document.getElementById('calendarTitle');
 const prevBtn = document.getElementById('prevBtn');
@@ -107,7 +107,7 @@ nextBtn.addEventListener('click', () => {
 });
 
 ///////////////////
-//   BOTTOM   /////
+/// To-do-List  ///
 ///////////////////
 
 const todoInput = document.querySelector('#todoInput');
@@ -198,3 +198,20 @@ function createTodo (storageData) { // 할 일 추가 기능
         localStorage.setItem('saved-items', JSON.stringify(saveItems));
     }
   }
+
+///////////////////
+///   MUSIC   /////
+///////////////////
+
+document.querySelector('.music').addEventListener('click', () => {
+  const audio = document.getElementById('audioPlayer');
+  const buttonImage = document.getElementById('Btnimage');
+
+  if (buttonImage.src.includes("image/play.png")) {
+    audio.play();
+    buttonImage.src = "image/pause.png";
+  } else {
+    audio.pause();
+    buttonImage.src = "image/play.png";
+  }
+});
