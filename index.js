@@ -110,7 +110,17 @@ nextBtn.addEventListener('click', () => {
 //   BOTTOM   /////
 ///////////////////
 
+const todoInput = document.querySelector('#todoInput');
 const addBtn = document.querySelector('#addBtn'); // 추가 버튼 선택
+
+const savedTodoList =JSON.parse(localStorage.getItem('saved-items'));
+console.log(savedTodoList);
+
+if(savedTodoList){//로컬데이터가 존재하면 실행
+  for(let i=0; i<savedTodoList.length; i++){
+    createTodo(savedTodoList[i]);
+  }
+}
 
 function keyCodeCheck(event) { // 엔터키로 추가
   if (event.key === "Enter" && todoInput.value.trim() !== '') {
@@ -124,36 +134,22 @@ addBtn.addEventListener('click', () => { // + 버튼으로 추가
   }
 })
 
-const savedTodoList =JSON.parse(localStorage.getItem('saved-items'));
-
-if(savedTodoList){//로컬데이터가 존재하면 실행
-  for(let i=0; i<savedTodoList.length; i++){
-    createTodo(savedTodoList[i]);
-  }
-}
-
-const todoInput = document.querySelector('#todoInput');
-
 function createTodo (storageData) { // 할 일 추가 기능
   let todoContents =todoInput.value;
     if(storageData){
       todoContents=storageData.contents
     }
 
-    if (storageData && storageData.complete === true) {
-      newLi.classList.add('complete')
-    }
-
 	const todoList = document.querySelector('#todoList');
 	const newLi = document.createElement('li'); // li 생성
     const newBtn = document.createElement('button'); // button 생성
 	const newSpan = document.createElement('span'); // span 생성
-
+  const deleteAll = document.querySelector('.delete-btn-wrap');
       
     newLi.appendChild(newBtn); // li안에 button 담기
 	newLi.appendChild(newSpan); // li안에 span 담기
       
-	newSpan.textContent = todoInput.value; // span 안에 value값 담기
+	newSpan.textContent = todoContents; // span 안에 value값 담기
       
 	todoList.appendChild(newLi);
       
@@ -170,6 +166,12 @@ function createTodo (storageData) { // 할 일 추가 기능
     newLi.remove();
     saveItemsFn();
   })
+
+    if (storageData && storageData.complete === true) {
+      newLi.classList.add('complete')
+  }
+
+  saveItemsFn();
 }
 
   //전체 삭제버튼
