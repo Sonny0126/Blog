@@ -134,45 +134,51 @@ addBtn.addEventListener('click', () => { // + 버튼으로 추가
   }
 })
 
-function createTodo (storageData) { // 할 일 추가 기능
-  let todoContents =todoInput.value;
-    if(storageData){
-      todoContents=storageData.contents
-    }
 
-	const todoList = document.querySelector('#todoList');
-	const newLi = document.createElement('li'); // li 생성
-    const newBtn = document.createElement('button'); // button 생성
-	const newSpan = document.createElement('span'); // span 생성
+function createTodo(storageData) {
+  let todoContents = todoInput.value;
+  if (storageData) {
+    todoContents = storageData.contents;
+  }
+
+  const todoList = document.querySelector('#todoList');
+  const newLi = document.createElement('li'); 
+  const newCheckbox = document.createElement('input'); // 체크박스 생성
+  newCheckbox.type = 'checkbox'; // 체크박스 설정
+  newCheckbox.classList.add('todo-checkbox'); 
+  const newSpan = document.createElement('span'); // 할 일 텍스트
   const deleteAll = document.querySelector('.delete-btn-wrap');
-      
-    newLi.appendChild(newBtn); // li안에 button 담기
-	newLi.appendChild(newSpan); // li안에 span 담기
-      
-	newSpan.textContent = todoContents; // span 안에 value값 담기
-      
-	todoList.appendChild(newLi);
-      
-	todoInput.value = ''; // value 값에 빈 문자열 담기
 
-  newBtn.addEventListener('click', () => { // 체크박스 클릭시 완료 표시
-		newLi.classList.toggle('complete');
+  newLi.appendChild(newCheckbox); // li 안에 체크박스 추가
+  newLi.appendChild(newSpan); // li 안에 span 추가
 
+  newSpan.textContent = todoContents; // span 안에 value값 담기
+
+  todoList.appendChild(newLi);
+
+  todoInput.value = ''; // 입력 필드 초기화
+
+  // ✅ 체크박스 클릭 시 완료 표시 (complete 클래스 추가)
+  newCheckbox.addEventListener('change', () => {
+    newLi.classList.toggle('complete', newCheckbox.checked);
     saveItemsFn();
-    });
+  });
 
+  // ✅ 더블 클릭 시 삭제
   newLi.addEventListener('dblclick', () => {
-    //더블 클릭시 삭제
     newLi.remove();
     saveItemsFn();
-  })
+  });
 
-    if (storageData && storageData.complete === true) {
-      newLi.classList.add('complete')
+  // ✅ 기존 데이터가 있을 경우 체크박스 상태 유지
+  if (storageData && storageData.complete === true) {
+    newLi.classList.add('complete');
+    newCheckbox.checked = true;
   }
 
   saveItemsFn();
 }
+
 
   //전체 삭제버튼
   function deleteAll(){
