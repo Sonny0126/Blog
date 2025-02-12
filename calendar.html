@@ -22,14 +22,27 @@
           scope: SCOPES
         }).then(() => {
           console.log("Google API Initialized");
+          document.getElementById("google-login-btn").disabled = false; // 로그인 버튼 활성화
+        }).catch(error => {
+          console.error("Google API 초기화 실패:", error);
         });
       }
 
       function handleAuthClick() {
-        gapi.auth2.getAuthInstance().signIn();
+        gapi.auth2.getAuthInstance().signIn().then(() => {
+          console.log("User signed in successfully");
+        }).catch(error => {
+          console.error("Sign-in error:", error);
+        });
       }
 
+
       function addEventToGoogleCalendar(eventInfo) {
+        if (!gapi.auth2.getAuthInstance().isSignedIn.get()) {
+          alert("Google 로그인 후 다시 시도하세요.");
+          return;
+        }
+
         const event = {
           summary: eventInfo.title,
           start: { dateTime: eventInfo.startStr },
@@ -51,7 +64,7 @@
         var calendarEl = document.getElementById('calendar');
         var calendar = new FullCalendar.Calendar(calendarEl, {
           initialView: 'dayGridMonth',
-          googleCalendarApiKey: 'AIzaSyCCCLytqT96rJQsmKF5i74uswlwQHm76oc',
+          googleCalendarApiKey: API_KEY,
           events: {
             googleCalendarId: 'e5062d31941fee792a6dea052f64c1cf68216170e383b8c1e1f77f0504013111@group.calendar.google.com'
           },
