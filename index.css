@@ -10,7 +10,7 @@
 body {
     background-color: #FAF3F0; /* 부드러운 배경색 */
     background-image: url('image/Night.png');
-    background-size: 100%;
+    background-size: cover;
     background-repeat: no-repeat;
     background-position: bottom center; 
     margin: 0;
@@ -20,9 +20,9 @@ body {
 
 .container {
     display: flex;
-    justify-content: space-between;
+    justify-content: space-evenly;
     align-items: flex-start;
-    width: 90%;
+    width: 80%;
     margin: 20px auto;
     gap: 20px;
     font-family: 'CustomFont', sans-serif; 
@@ -38,7 +38,7 @@ body {
 }
 
 .leftup {
-    width: 50%;
+    width: 60%;
     background: #ffffff;
     padding: 20px;
     border-radius: 15px;
@@ -178,17 +178,60 @@ body {
 }
 
 /* =========================
-      할 일 리스트 스타일
+      오른쪽 부분
 =========================== */
 
-.todo-list {
+.right-container {
+    display: flex;
+    flex-direction: row; /* 요소를 가로 배치 */
+    align-items: flex-start; /* 상단 정렬 */
+    justify-content: space-between; /* 양쪽 정렬 */
     width: 100%;
-    margin-top: 30px;
+    margin: 0 auto; /* 가운데 정렬 */
+    gap: 20px; /* 간격 조정 */
+}
+
+/* 뮤직 플레이어 (왼쪽) */
+.music {
+    flex: 2; /* 크기 비율 */
+    position: relative;
+    width: 100%;
+    max-width: 800px;
+    height: 430px;
+    background: #ffffff;
+    border-radius: 15px;
+    display: flex;
+    margin-top: 20px;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    padding: 15px;
+    box-sizing: border-box;
+}
+
+/* 유튜브 플레이어 크기 조정 */
+#youtubePlayer {
+    width: 100%;
+    height: 100%;
+    border-radius: 10px;
+}
+
+/* 플레이 버튼 */
+#Btnimage {
+    width: 60px;
+    cursor: pointer;
+}
+
+
+/* 투두 리스트 스타일 */
+
+.todo-list {
+    width: 30%;
+    margin-top: 20px;
     background-color: #FFE8AD;
-    border-radius: 5%;
+    border-radius: 15px;
     text-align: center;
     padding: 20px;
-    box-shadow: 0 4px 10px rgba(0, 0, 0, 0.1);
 }
 
 /* 입력 필드 스타일 */
@@ -311,49 +354,12 @@ body {
     background-color: #c0392b;
 }
 
-/* 🎵 뮤직 플레이어 스타일 (플레이리스트 디자인) */
-.music {
-    position: absolute;
-    top: 5%;
-    left: 50%;
-    transform: translateX(-50%);
-    width: 1000px;;
-    height: 400px;
-    background: #ffffff;
-    border-radius: 15px;
-    display: flex;
-    flex-direction: column;
-    align-items: center;
-    justify-content: center;
-    padding: 15px;
-}
-
-/* 유튜브 플레이어 크기 조정 */
-#youtubePlayer {
-    width: 100%;
-    height: 500px;
-    border-radius: 10px;
-}
-
-/* 노래 제목 스타일 */
-.song-title {
-    font-size: 18px;
-    font-weight: bold;
-    color: #333;
-    margin-top: 10px;
-}
-
-/* 플레이 버튼 */
-#Btnimage {
-    width: 40px;
-    cursor: pointer;
-}
 
 
 /* =========================
-    반응형 디자인
+    반응형 디자인 (모바일 & 태블릿)
 =========================== */
-@media (max-width: 768px) {
+@media (max-width: 1024px) {
     .container {
         flex-direction: column;
         align-items: center;
@@ -362,5 +368,56 @@ body {
     .left-container, .right-container {
         width: 90%;
         margin-bottom: 20px;
+    }
+
+    .music {
+        width: 95%;
+    }
+}
+
+@media (max-width: 768px) {
+    .left-container, .right-container {
+        width: 100%;
+    }
+
+    .music {
+        width: 100%;
+    }
+
+    #Btnimage {
+        width: 12%;
+    }
+
+    .days {
+        gap: 2px;
+    }
+}
+
+@media (max-width: 480px) {
+    body {
+        background-size: cover;
+    }
+
+    .container {
+        width: 95%;
+        flex-direction: column;
+        align-items: center;
+    }
+
+    .music {
+        width: 100%;
+    }
+
+    #youtubePlayer {
+        aspect-ratio: 16 / 9;
+    }
+
+    .leftup button {
+        font-size: 0.9em;
+        padding: 10px;
+    }
+
+    #Btnimage {
+        width: 15%;
     }
 }
