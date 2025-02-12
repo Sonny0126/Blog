@@ -2,22 +2,27 @@
 ///   LEFTUP    ///
 ///////////////////
 // ✅ 밤낮 조절 버튼 기능
-const switchButton = document.getElementById('switch');
-const switchImg = document.getElementById('switch-img');
+const switchButton = document.getElementById('switch');//switch ID를 받아와서 상수 만듬
+const switchImg = document.getElementById('switch-img');//switch-img를 수정하는 switchImg 만듬
 const body = document.body;
 
+// 페이지가 로드되면 날씨 데이터를 가져오고 달력 표시
 window.onload = () => {
-    body.style.backgroundImage = "url('image/Night.png')";
-    displayCalendar();
+  // 사용자의 현재 위치에서 날씨 정보 가져오기
+  navigator.geolocation.getCurrentPosition(position => {
+      const lat = position.coords.latitude;
+      const lon = position.coords.longitude;
+      getWeatherForDate(lat, lon, new Date()); // 현재 위치와 날짜로 날씨 정보 가져오기
+  });
 };
 
-switchButton.addEventListener('click', () => {
+switchButton.addEventListener('click', () => {//밤일 때 전구 불 On, 낮일 때 전구 불 Off
     const isNight = switchImg.getAttribute('src') === 'image/off.png';
     body.style.backgroundImage = isNight ? "url('image/Night.png')" : "url('image/Day.png')";
     switchImg.setAttribute('src', isNight ? 'image/on.png' : 'image/off.png');
 });
 
-// ✅ 페이지 이동 버튼 기능
+//객체를 만들어서 button ID를 해당 URL에 각각 매핑
 const pageLinks = {
     button1: 'https://sonny0126.github.io/Web/',
     button2: 'https://sonny0126.github.io/BitFlow/',
@@ -25,6 +30,8 @@ const pageLinks = {
     button4: 'https://blog.naver.com/chewypig'
 };
 
+// //키 값들을 불러와서 배열로가져와서 클릭 이벤트 추가
+// Object.keys() 정적 메서드는 주어진 객체 자체의 열거 가능한 문자열 키를 가진 속성들의 이름을 배열로 반환합니다.
 Object.keys(pageLinks).forEach(id => {
     document.getElementById(id).addEventListener('click', () => {
         window.location.href = pageLinks[id];
@@ -36,20 +43,43 @@ Object.keys(pageLinks).forEach(id => {
 //////////////////
 // ✅ 달력 기능
 const calendarTitle = document.getElementById('calendarTitle');
-const prevBtn = document.getElementById('prevBtn');
-const nextBtn = document.getElementById('nextBtn');
-const days = document.querySelector('.days');
-const selected = document.querySelector('.selected');
+const prevBtn = document.getElementById('prevBtn'); //이전 버튼
+const nextBtn = document.getElementById('nextBtn'); //다음 버튼
+const days = document.querySelector('.days'); //날들
+const selected = document.querySelector('.selected'); //선택한 날들
+const weatherData = {}; // 날씨 데이터를 저장할 객체
 
 let dateToday = new Date();
-let year = dateToday.getFullYear();
-let month = dateToday.getMonth();
+let year = dateToday.getFullYear(); //년도
+let month = dateToday.getMonth(); //달
+
+// 날씨 정보 가져오기
+function getWeatherForDate(lat, lon, date) {
+    const url = `https://api.openweathermap.org/data/2.5/forecast?lat=${lat}&lon=${lon}&appid=${API_KEY}&units=metric&lang=kr`;
+
+    fetch(url)
+        .then(response => response.json())
+        .then(data => {
+            // 날씨 정보를 날짜별로 저장
+            data.list.forEach(item => {
+                const forecastDate = item.dt_txt.split(" ")[0];
+                if (!weatherData[forecastDate]) {
+                    weatherData[forecastDate] = {
+                        description: item.weather[0].description,
+                        temp: item.main.temp,
+                    };
+                }
+            });
+            displayCalendar(); // 날씨 정보를 가져온 후 달력 표시
+        })
+        .catch(error => console.error("주간 날씨 데이터를 가져오는 데 실패했습니다.", error));
+}
 
 function displayCalendar() {
-    const firstDay = new Date(year, month, 1);
-    const firstDayIdx = firstDay.getDay();
-    const lastDay = new Date(year, month + 1, 0);
-    const numberOfDays = lastDay.getDate();
+    const firstDay = new Date(year, month, 1); //첫째 날
+    const firstDayIdx = firstDay.getDay(); // 이번 달 1일의 요일
+    const lastDay = new Date(year, month + 1, 0); // 이번 달의 마지막 날짜
+    const numberOfDays = lastDay.getDate(); //이번 달의 날짜 개수
 
     calendarTitle.innerText = dateToday.toLocaleString('ko-KR', {
         year: "numeric",
@@ -72,12 +102,21 @@ function displayCalendar() {
         div.innerText = x;
         div.classList.add('day');
 
+        // 오늘 날짜
         if (
             currentDate.getFullYear() === new Date().getFullYear() &&
             currentDate.getMonth() === new Date().getMonth() &&
             currentDate.getDate() === new Date().getDate()
         ) {
-            div.classList.add('current-date');
+            div.classList.add('current-date'); //오늘 날짜
+        }
+
+        // 날씨 정보 추가
+        const dateString = currentDate.toDateString();
+        if (weatherData[dateString]) {
+            const weatherDesc = weatherData[dateString].description;
+            const temp = weatherData[dateString].temp;
+            div.innerHTML += `<br>🌤 ${weatherDesc}, ${temp}°C`;
         }
 
         days.appendChild(div);
@@ -86,6 +125,7 @@ function displayCalendar() {
     setupDateSelection();
 }
 
+// 날짜 클릭 시 선택한 날짜 표시
 function setupDateSelection() {
     document.querySelectorAll('.days .day').forEach(day => {
         day.addEventListener('click', (e) => {
@@ -94,6 +134,7 @@ function setupDateSelection() {
     });
 }
 
+// 이전, 다음 버튼 클릭 시 달력 변경
 prevBtn.addEventListener('click', () => {
     month = month === 0 ? 11 : month - 1;
     if (month === 11) year -= 1;
@@ -249,3 +290,54 @@ document.addEventListener('DOMContentLoaded', () => {
   // 유튜브 API 스크립트 로드
   loadYouTubeAPI();
 });
+
+
+//날씨 데이터 추가
+const API_KEY = "6083dd2094c41abda26c43af65c3f9a5";
+
+function getWeather() {
+    navigator.geolocation.getCurrentPosition(position => {
+        const lat = position.coords.latitude;
+        const lon = position.coords.longitude;
+        const url = `https://api.openweathermap.org/data/2.5/weather?lat=${lat}&lon=${lon}&appid=${API_KEY}&units=metric&lang=kr`;
+
+        fetch(url)
+            .then(response => response.json())
+            .then(data => {
+                const weatherDesc = data.weather[0].description;
+                const temp = data.main.temp;
+                document.querySelector("#weather").innerText = `🌤 ${weatherDesc}, ${temp}°C`;
+            })
+            .catch(error => console.error("날씨 정보를 가져오는 데 실패했습니다.", error));
+    });
+}
+
+function getWeeklyWeather() {
+  navigator.geolocation.getCurrentPosition(position => {
+      const lat = position.coords.latitude;
+      const lon = position.coords.longitude;
+      const url = `https://api.openweathermap.org/data/2.5/forecast?lat=${lat}&lon=${lon}&appid=${API_KEY}&units=metric&lang=kr`;
+
+      fetch(url)
+          .then(response => response.json())
+          .then(data => {
+              const weatherByDate = {};
+              data.list.forEach(item => {
+                  const date = item.dt_txt.split(" ")[0];
+                  if (!weatherByDate[date]) {
+                      weatherByDate[date] = item;
+                  }
+              });
+
+              document.querySelectorAll(".day").forEach(day => {
+                  const date = day.dataset.date.split(" ")[0];
+                  if (weatherByDate[date]) {
+                      const weatherDesc = weatherByDate[date].weather[0].description;
+                      const temp = weatherByDate[date].main.temp;
+                      day.innerHTML += `<br>🌤 ${weatherDesc}, ${temp}°C`;
+                  }
+              });
+          })
+          .catch(error => console.error("주간 날씨 데이터를 가져오는 데 실패했습니다.", error));
+  });
+}
