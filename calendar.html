@@ -1,58 +1,105 @@
 <!DOCTYPE html>
 <html lang='en'>
-  <head>
+<head>
     <meta charset='utf-8' />
     <script src='https://cdn.jsdelivr.net/npm/fullcalendar@6.1.15/index.global.min.js'></script>
-    <script src='https://cdn.jsdelivr.net/npm/@fullcalendar/google-calendar@6.1.15/index.global.min.js'></script>
     <script src="https://apis.google.com/js/api.js"></script>
     <script>
-      const CLIENT_ID = '730180124578-n6kv46c1eoi5159t1jhb6jbu5db914o3.apps.googleusercontent.com';
-      const API_KEY = 'AIzaSyCCCLytqT96rJQsmKF5i74uswlwQHm76oc';
-      const SCOPES = "https://www.googleapis.com/auth/calendar.events";
+        const CLIENT_ID = '730180124578-n6kv46c1eoi5159t1jhb6jbu5db914o3.apps.googleusercontent.com';
+        const API_KEY = 'AIzaSyCCCLytqT96rJQsmKF5i74uswlwQHm76oc';
+        const DISCOVERY_DOCS = ["https://www.googleapis.com/discovery/v1/apis/calendar/v3/rest"];
+        const SCOPES = "https://www.googleapis.com/auth/calendar.events.readonly";
 
-      function handleAuthClick() {
-        gapi.auth2.getAuthInstance().signIn();
-      }
+        let calendar;
+        
+        function initClient() {
+            gapi.client.init({
+                apiKey: API_KEY,
+                clientId: CLIENT_ID,
+                discoveryDocs: DISCOVERY_DOCS,
+                scope: SCOPES
+            }).then(() => {
+                gapi.auth2.getAuthInstance().isSignedIn.listen(updateSigninStatus);
+                updateSigninStatus(gapi.auth2.getAuthInstance().isSignedIn.get());
+            }).catch(error => {
+                console.error("Error initializing Google API client", error);
+            });
+        }
 
-      function goToGoogleCalendar() {
-        // 구글 캘린더 페이지로 리디렉션
-        window.location.href = 'https://calendar.google.com/';
-      }
+        function handleAuthClick() {
+            gapi.auth2.getAuthInstance().signIn();
+        }
 
-      document.addEventListener('DOMContentLoaded', function() {
-        var calendarEl = document.getElementById('calendar'); 
-        var calendar = new FullCalendar.Calendar(calendarEl, {
-          initialView: 'dayGridMonth',
-          googleCalendarApiKey: API_KEY,
-          events: {
-            googleCalendarId: 'e5062d31941fee792a6dea052f64c1cf68216170e383b8c1e1f77f0504013111@group.calendar.google.com'
-          },
-          selectable: true,
-        });
-        calendar.render();
-      });
+        function handleSignoutClick() {
+            gapi.auth2.getAuthInstance().signOut();
+        }
+
+        function updateSigninStatus(isSignedIn) {
+            if (isSignedIn) {
+                loadCalendarEvents();
+            } else {
+                console.log("User not signed in");
+            }
+        }
+
+        function loadCalendarEvents() {
+            gapi.client.calendar.events.list({
+                calendarId: 'primary',
+                timeMin: new Date().toISOString(),
+                showDeleted: false,
+                singleEvents: true,
+                maxResults: 10,
+                orderBy: 'startTime'
+            }).then(response => {
+                const events = response.result.items;
+                if (events.length) {
+                    let eventList = events.map(event => ({
+                        title: event.summary,
+                        start: event.start.dateTime || event.start.date
+                    }));
+                    renderCalendar(eventList);
+                } else {
+                    console.log("No upcoming events found.");
+                }
+            });
+        }
+
+        function renderCalendar(events) {
+            var calendarEl = document.getElementById('calendar');
+            calendar = new FullCalendar.Calendar(calendarEl, {
+                initialView: 'dayGridMonth',
+                events: events,
+                selectable: true
+            });
+            calendar.render();
+        }
+
+        function goToGoogleCalendar() {
+            window.location.href = 'https://calendar.google.com/';
+        }
+
+        gapi.load('client:auth2', initClient);
     </script>
-  </head>
-  <body>
+</head>
+<body>
+    <button onclick="handleAuthClick()">Sign in with Google</button>
+    <button onclick="handleSignoutClick()">Sign out</button>
     <div id='calendar'></div>
-    
-    <!-- 버튼에 'calendar-btn' 클래스 적용 -->
     <button class="calendar-btn" onclick="goToGoogleCalendar()">Google Calendar</button>
-  </body>
-  <style>
-    /* 'calendar-btn' 클래스 적용 */
+</body>
+<style>
     .calendar-btn {
-      background-color: green; /* 버튼 배경색을 녹색으로 설정 */
-      color: white; /* 글자 색은 하얀색 */
-      padding: 10px 20px; /* 버튼에 패딩 추가 */
-      border: none; /* 버튼 테두리 없애기 */
-      cursor: pointer; /* 커서 모양을 포인터로 변경 */
-      margin-top:10px;
-      border-radius: 15px;
+        background-color: green;
+        color: white;
+        padding: 10px 20px;
+        border: none;
+        cursor: pointer;
+        margin-top: 10px;
+        border-radius: 15px;
     }
 
     .calendar-btn:hover {
-      background-color: darkgreen; /* 버튼 위에 마우스를 올리면 색이 변함 */
+        background-color: darkgreen;
     }
-  </style>
+</style>
 </html>
