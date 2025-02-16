@@ -10,71 +10,49 @@
       const API_KEY = 'AIzaSyCCCLytqT96rJQsmKF5i74uswlwQHm76oc';
       const SCOPES = "https://www.googleapis.com/auth/calendar.events";
 
-      function handleClientLoad() {
-        gapi.load('client:auth2', initClient);
-      }
-
-      function initClient() {
-        gapi.client.init({
-          apiKey: API_KEY,
-          clientId: CLIENT_ID,
-          discoveryDocs: ["https://www.googleapis.com/discovery/v1/apis/calendar/v3/rest"],
-          scope: SCOPES
-        }).then(() => {
-          console.log("Google API Initialized");
-        });
-      }
-
       function handleAuthClick() {
         gapi.auth2.getAuthInstance().signIn();
       }
 
-      function addEventToGoogleCalendar(eventInfo) {
-        const event = {
-          summary: eventInfo.title,
-          start: { dateTime: eventInfo.startStr },
-          end: { dateTime: eventInfo.endStr }
-        };
-
-        gapi.client.calendar.events.insert({
-          calendarId: 'primary',
-          resource: event
-        }).then(response => {
-          console.log('이벤트 추가됨:', response);
-          alert('이벤트가 Google Calendar에 추가되었습니다!');
-        }).catch(err => {
-          console.error('이벤트 추가 실패:', err);
-        });
+      function goToGoogleCalendar() {
+        // 구글 캘린더 페이지로 리디렉션
+        window.location.href = 'https://calendar.google.com/';
       }
 
       document.addEventListener('DOMContentLoaded', function() {
-        var calendarEl = document.getElementById('calendar');
+        var calendarEl = document.getElementById('calendar'); 
         var calendar = new FullCalendar.Calendar(calendarEl, {
           initialView: 'dayGridMonth',
-          googleCalendarApiKey: 'AIzaSyCCCLytqT96rJQsmKF5i74uswlwQHm76oc',
+          googleCalendarApiKey: API_KEY,
           events: {
             googleCalendarId: 'e5062d31941fee792a6dea052f64c1cf68216170e383b8c1e1f77f0504013111@group.calendar.google.com'
           },
           selectable: true,
-          select: function(info) {
-            let title = prompt("이벤트 제목을 입력하세요:");
-            if (title) {
-              let newEvent = {
-                title: title,
-                startStr: info.startStr,
-                endStr: info.endStr
-              };
-              addEventToGoogleCalendar(newEvent);
-              calendar.addEvent(newEvent);
-            }
-          }
         });
         calendar.render();
       });
     </script>
   </head>
-  <body onload="handleClientLoad()">
-    <button onclick="handleAuthClick()">Google 로그인</button>
+  <body>
     <div id='calendar'></div>
+    
+    <!-- 버튼에 'calendar-btn' 클래스 적용 -->
+    <button class="calendar-btn" onclick="goToGoogleCalendar()">Google Calendar</button>
   </body>
+  <style>
+    /* 'calendar-btn' 클래스 적용 */
+    .calendar-btn {
+      background-color: green; /* 버튼 배경색을 녹색으로 설정 */
+      color: white; /* 글자 색은 하얀색 */
+      padding: 10px 20px; /* 버튼에 패딩 추가 */
+      border: none; /* 버튼 테두리 없애기 */
+      cursor: pointer; /* 커서 모양을 포인터로 변경 */
+      margin-top:10px;
+      border-radius: 15px;
+    }
+
+    .calendar-btn:hover {
+      background-color: darkgreen; /* 버튼 위에 마우스를 올리면 색이 변함 */
+    }
+  </style>
 </html>
