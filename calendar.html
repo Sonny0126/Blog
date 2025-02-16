@@ -4,18 +4,22 @@
     <meta charset="utf-8" />
     <title>Google Calendar Integration</title>
     <script src="https://cdn.jsdelivr.net/npm/fullcalendar@6.1.15/index.global.min.js"></script>
-    <script src="https://apis.google.com/js/api.js"></script>
+    <script src="https://apis.google.com/js/api.js" onload="gapiLoad()"></script>
     <script src="https://accounts.google.com/gsi/client" async defer></script>
     <script>
-        const CLIENT_ID = '730180124578-n6kv46c1eoi5159t1jhb6jbu5db914o3.apps.googleusercontent.com';
-        const API_KEY = 'AIzaSyCCCLytqT96rJQsmKF5i74uswlwQHm76oc';
+        const CLIENT_ID = 'YOUR_CLIENT_ID';  // ✅ 보안 유지
+        const API_KEY = 'YOUR_API_KEY';
         const SCOPES = 'https://www.googleapis.com/auth/calendar.events';
 
         let tokenClient;
         let gapiLoaded = false;
-        let gisLoaded = false;
 
         function gapiLoad() {
+            if (typeof gapi === 'undefined') {
+                console.error("❌ gapi 객체가 아직 로드되지 않았습니다.");
+                return;
+            }
+
             gapi.load('client', async () => {
                 await gapi.client.init({
                     apiKey: API_KEY,
@@ -23,6 +27,7 @@
                 });
                 gapiLoaded = true;
                 console.log("✅ Google API 로드 완료");
+                gisLoad();
             });
         }
 
@@ -30,8 +35,7 @@
             tokenClient = google.accounts.oauth2.initTokenClient({
                 client_id: CLIENT_ID,
                 scope: SCOPES,
-                prompt: 'consent',  // ✅ 로그인 창이 강제로 표시되도록 설정
-                ux_mode: 'popup',  // 또는 'redirect'로 변경 가능
+                prompt: 'consent',
                 callback: (response) => {
                     if (response.error) {
                         console.error('❌ OAuth 로그인 실패:', response);
@@ -39,18 +43,23 @@
                     }
                     console.log('✅ OAuth 로그인 성공:', response);
                     gapi.client.setToken(response);
+                    localStorage.setItem('google_token', JSON.stringify(response));
                 }
             });
-            gisLoaded = true;
+
+            const savedToken = localStorage.getItem('google_token');
+            if (savedToken) {
+                gapi.client.setToken(JSON.parse(savedToken));
+                console.log("🔄 기존 로그인 토큰 복원 완료");
+            }
         }
 
         function handleAuthClick() {
-            if (!gapiLoaded || !gisLoaded) {
+            if (!gapiLoaded) {
                 alert('Google API가 아직 로드되지 않았습니다.');
                 return;
             }
-
-            tokenClient.requestAccessToken({ prompt: 'consent' }); // ✅ 항상 로그인 요청
+            tokenClient.requestAccessToken({ prompt: 'consent' });
         }
 
         async function addEventToGoogleCalendar(eventInfo) {
@@ -61,16 +70,16 @@
 
             const event = {
                 summary: eventInfo.title,
-                start: { dateTime: eventInfo.startStr },
-                end: { dateTime: eventInfo.endStr }
+                description: eventInfo.description,
+                start: { dateTime: new Date(eventInfo.startStr).toISOString(), timeZone: 'Asia/Seoul' },
+                end: { dateTime: new Date(eventInfo.endStr).toISOString(), timeZone: 'Asia/Seoul' }
             };
 
             try {
-                const response = await gapi.client.calendar.events.insert({
+                await gapi.client.calendar.events.insert({
                     calendarId: 'primary',
                     resource: event
                 });
-                console.log('✅ 이벤트 추가 성공:', response);
                 alert('이벤트가 Google Calendar에 추가되었습니다!');
             } catch (err) {
                 console.error('❌ 이벤트 추가 실패:', err);
@@ -78,22 +87,24 @@
             }
         }
 
-        document.addEventListener('DOMContentLoaded', function() {
-            gapiLoad();
-            gisLoad();
+        window.onload = function() {
+            if (typeof gapi !== 'undefined') {
+                gapiLoad();
+            } else {
+                console.warn("⏳ Google API가 아직 로드되지 않았습니다. 잠시 후 다시 시도하세요.");
+            }
+        };
 
+        document.addEventListener('DOMContentLoaded', function() {
             var calendarEl = document.getElementById('calendar');
             var calendar = new FullCalendar.Calendar(calendarEl, {
                 initialView: 'dayGridMonth',
                 selectable: true,
                 select: function(info) {
                     let title = prompt("이벤트 제목을 입력하세요:");
+                    let description = prompt("이벤트 설명을 입력하세요:");
                     if (title) {
-                        let newEvent = {
-                            title: title,
-                            startStr: info.startStr,
-                            endStr: info.endStr
-                        };
+                        let newEvent = { title, description, startStr: info.startStr, endStr: info.endStr };
                         addEventToGoogleCalendar(newEvent);
                         calendar.addEvent(newEvent);
                     }
