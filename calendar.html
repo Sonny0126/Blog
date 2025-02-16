@@ -11,8 +11,24 @@
       const SCOPES = "https://www.googleapis.com/auth/calendar.events";
 
       function handleAuthClick() {
-        gapi.auth2.getAuthInstance().signIn();
+        gapi.auth2.getAuthInstance().signIn().then(() => {
+          loadCalendarEvents();
+        });
       }
+
+      function loadCalendarEvents() {
+        gapi.client.calendar.events.list({
+          'calendarId': 'primary',
+          'timeMin': new Date().toISOString(),
+          'showDeleted': false,
+          'singleEvents': true,
+          'maxResults': 10,
+          'orderBy': 'startTime'
+        }).then(function(response) {
+          console.log(response.result.items); // 일정 데이터 확인
+        });
+      }
+
 
       function goToGoogleCalendar() {
         // 구글 캘린더 페이지로 리디렉션
