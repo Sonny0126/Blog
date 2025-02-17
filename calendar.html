@@ -122,53 +122,52 @@
 
     // 5) 구글 캘린더 이벤트 불러오기 (비동기)
     async function loadCalendarEvents() {
-      try {
-        // 현재 시점 기준으로 한 달 전 ~ 한 달 뒤 일정만 가져오는 예시
-        const timeMin = new Date();
-        timeMin.setMonth(timeMin.getMonth() - 1);
-        const timeMax = new Date();
-        timeMax.setMonth(timeMax.getMonth() + 1);
+        try {
+            
+            // 오늘 날짜 기준, 1년 전
+            const timeMin = new Date();
+            timeMin.setFullYear(timeMin.getFullYear() - 1);
 
-        // events.list API 호출
-        const response = await gapi.client.calendar.events.list({
-          calendarId: 'primary',             // 기본 캘린더
-          timeMin: timeMin.toISOString(),    // 이 시간 이후의 일정만
-          timeMax: timeMax.toISOString(),    // 이 시간 이전의 일정만
-          showDeleted: false,
-          singleEvents: true,
-          orderBy: 'startTime'
-        });
+            // 오늘 날짜 기준, 1년 후
+            const timeMax = new Date();
+            timeMax.setFullYear(timeMax.getFullYear() + 1);
 
-        const items = response.result.items;
-        if (!items || items.length === 0) {
-          console.log('가져올 이벤트가 없습니다.');
-          // 그래도 달력을 렌더링해야 한다면, 빈 배열을 넘김
-          renderCalendar([]);
-          return;
+            // events.list API 호출
+            const response = await gapi.client.calendar.events.list({
+            calendarId: 'primary',
+            timeMin: timeMin.toISOString(),
+            timeMax: timeMax.toISOString(),
+            showDeleted: false,
+            singleEvents: true,
+            orderBy: 'startTime'
+            });
+
+            const items = response.result.items;
+            if (!items || items.length === 0) {
+            console.log('가져올 이벤트가 없습니다.');
+            renderCalendar([]);
+            return;
+            }
+
+            // FullCalendar 이벤트 형식으로 매핑
+            const eventsForFullCalendar = items.map(event => {
+            const start = event.start.dateTime || event.start.date;
+            const end = event.end.dateTime || event.end.date;
+            return {
+                id: event.id,
+                title: event.summary || '(제목 없음)',
+                start: start,
+                end: end
+            };
+            });
+
+            // FullCalendar에 표시
+            renderCalendar(eventsForFullCalendar);
+        } catch (error) {
+            console.error('이벤트 가져오기 에러:', error);
         }
-
-        // FullCalendar 이벤트 형식으로 매핑
-        // FullCalendar는 start, end, title, id 등의 필드를 사용
-        const eventsForFullCalendar = items.map(event => {
-          // start와 end가 dateTime 또는 date 형태 중 어떤 것으로 내려올지 모름
-          const start = event.start.dateTime || event.start.date;
-          const end = event.end.dateTime || event.end.date;
-
-          return {
-            id: event.id,
-            title: event.summary || '(제목 없음)',
-            start: start,
-            end: end,
-            // 원한다면 더 많은 속성(예: description, htmlLink 등)을 여기에 매핑
-          };
-        });
-
-        // 이벤트를 포함하여 FullCalendar 렌더링
-        renderCalendar(eventsForFullCalendar);
-      } catch (error) {
-        console.error('이벤트 가져오기 에러:', error);
-      }
     }
+
 
     // 6) FullCalendar에 이벤트를 표시
     function renderCalendar(eventsData) {
