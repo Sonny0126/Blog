@@ -1,3 +1,4 @@
+
 const CLIENT_ID = '730180124578-n6kv46c1eoi5159t1jhb6jbu5db914o3.apps.googleusercontent.com';
     const API_KEY = 'AIzaSyCCCLytqT96rJQsmKF5i74uswlwQHm76oc';                 
     const SCOPES = 'https://www.googleapis.com/auth/calendar.readonly';
@@ -10,7 +11,7 @@ const CLIENT_ID = '730180124578-n6kv46c1eoi5159t1jhb6jbu5db914o3.apps.googleuser
     function gapiLoaded() {
       gapi.load('client', initGapiClient);
     }
-
+    
     // 3) gapi.client 초기화 (API Key, discoveryDocs 설정)
     async function initGapiClient() {
       try {
@@ -134,8 +135,30 @@ const CLIENT_ID = '730180124578-n6kv46c1eoi5159t1jhb6jbu5db914o3.apps.googleuser
       calendar = new FullCalendar.Calendar(calendarEl, {
         initialView: 'dayGridMonth',
         locale: 'ko',
-        // FullCalendar에 이벤트를 직접 배열로 전달
-        events: eventsData
+        events: eventsData,
+        dateClick: function (info) {
+          showEventsForDate(info.dateStr, eventsData);
+        }
       });
       calendar.render();
+    }
+
+    // 특정 날짜의 이벤트 목록을 표시하는 함수
+    function showEventsForDate(dateStr, eventsData) {
+      const eventListEl = document.getElementById('eventList');
+      eventListEl.innerHTML = ''; // 기존 목록 초기화
+
+      const filteredEvents = eventsData.filter(event => event.start.startsWith(dateStr));
+
+      if (filteredEvents.length === 0) {
+          eventListEl.innerHTML = '<p>이 날의 일정이 없습니다.</p>';
+      } else {
+          const list = document.createElement('ul');
+          filteredEvents.forEach(event => {
+              const listItem = document.createElement('li');
+              listItem.textContent = event.title;
+              list.appendChild(listItem);
+          });
+          eventListEl.appendChild(list);
+      }
     }
