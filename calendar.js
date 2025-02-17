@@ -193,22 +193,20 @@ const API_KEY = 'AIzaSyCCCLytqT96rJQsmKF5i74uswlwQHm76oc';
     }
   
 
-    // 특정 날짜의 이벤트 목록을 표시하는 함수
     function showEventsForDate(dateStr, eventsData) {
       const eventListEl = document.getElementById('eventList');
       eventListEl.innerHTML = ''; // 기존 목록 초기화
-
+    
       const filteredEvents = eventsData.filter(event => event.start.startsWith(dateStr));
-
+    
       if (filteredEvents.length === 0) {
           eventListEl.innerHTML = '<p>이 날의 일정이 없습니다.</p>';
       } else {
-          const list = document.createElement('ul');
           filteredEvents.forEach(event => {
-              const listItem = document.createElement('li');
-              listItem.textContent = event.title;
-              list.appendChild(listItem);
+              const eventItem = document.createElement('p');
+              eventItem.textContent = event.title;
+              eventListEl.appendChild(eventItem);
           });
-          eventListEl.appendChild(list);
       }
     }
+    

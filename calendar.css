@@ -29,6 +29,14 @@ color: #fff;           /* 흰색 */
 font-family: "Font", sans-serif;
 }
 
+#eventList{
+  padding: 8px 16px;
+  font-size: 14px;
+  background-color: #000; /* 검은색 */
+  color: #fff;           /* 흰색 */
+  font-family: "Font", sans-serif;
+}
+
 h1{
   font-family: "Font", sans-serif;
   cursor: pointer;
