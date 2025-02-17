@@ -2,7 +2,7 @@
 <html lang="ko">
 <head>
   <meta charset="UTF-8">
-  <title>구글달력 연동</title>
+  <title>Google Calendar Load</title>
   <!-- FullCalendar 기본 스타일 (CDN) -->
   <link href="https://cdn.jsdelivr.net/npm/fullcalendar@6.1.5/index.global.min.css" rel="stylesheet" />
 
@@ -49,6 +49,7 @@
     
     h1{
         font-family: "Font", sans-serif;
+        cursor: pointer;
     }
 
     /* FullCalendar 전체에 폰트 적용 */
@@ -59,7 +60,7 @@
   </style>
 </head>
 <body>
-  <h1>My Google-Calendar</h1>
+  <h1 id="theme">My Google-Calendar</h1>
 
   <!-- 로드 버튼 -->
   <button id="loadBtn">Load calendar</button>
@@ -138,6 +139,12 @@
         window.open("https://calendar.google.com", "_blank");
     }
 
+    const themeBtn=document.getElementById('theme');
+
+    themeBtn.onclick= () => {
+        window.open("https://sonny0126.github.io/Blog/");
+    }
+
     // 5) 구글 캘린더 이벤트 불러오기 (비동기)
     async function loadCalendarEvents() {
         try {
@@ -185,7 +192,6 @@
             console.error('이벤트 가져오기 에러:', error);
         }
     }
-
 
     // 6) FullCalendar에 이벤트를 표시
     function renderCalendar(eventsData) {
