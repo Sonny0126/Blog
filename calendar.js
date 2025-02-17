@@ -1,6 +1,6 @@
 
 const CLIENT_ID = '730180124578-n6kv46c1eoi5159t1jhb6jbu5db914o3.apps.googleusercontent.com';
-    const API_KEY = 'AIzaSyCCCLytqT96rJQsmKF5i74uswlwQHm76oc';                 
+const API_KEY = 'AIzaSyCCCLytqT96rJQsmKF5i74uswlwQHm76oc';                 
     const SCOPES = 'https://www.googleapis.com/auth/calendar.readonly';
 
     let tokenClient;    // OAuth 토큰 클라이언트
@@ -142,6 +142,56 @@ const CLIENT_ID = '730180124578-n6kv46c1eoi5159t1jhb6jbu5db914o3.apps.googleuser
       });
       calendar.render();
     }
+
+      document.addEventListener('DOMContentLoaded', function () {
+        let calendarEl = document.getElementById('calendar');
+    
+        let calendar = new FullCalendar.Calendar(calendarEl, {
+            initialView: 'dayGridMonth',
+            locale: 'ko', // 한국어 설정
+            selectable: true, // 날짜 선택 가능
+            events: [], // 여기에 Google 캘린더 API로 일정 로드 예정
+            dateClick: function(info) {
+                // 선택한 날짜의 일정 가져오기
+                loadEventsForDate(info.dateStr);
+            }
+        });
+    
+        calendar.render();
+    });
+  
+      function loadEventsForDate(dateStr) {
+        let eventListDiv = document.getElementById('eventList');
+        eventListDiv.innerHTML = `<h3>${dateStr}의 일정</h3>`; // 선택한 날짜 표시
+    
+        // Google Calendar API로 가져온 이벤트 리스트
+        gapi.client.calendar.events.list({
+            'calendarId': 'primary',
+            'timeMin': new Date(dateStr).toISOString(), // 선택한 날짜의 00:00:00
+            'timeMax': new Date(new Date(dateStr).setHours(23, 59, 59)).toISOString(), // 선택한 날짜의 23:59:59
+            'showDeleted': false,
+            'singleEvents': true,
+            'orderBy': 'startTime'
+        }).then(function (response) {
+            let events = response.result.items;
+    
+            if (!events || events.length === 0) {
+                eventListDiv.innerHTML += `<p>일정이 없습니다.</p>`;
+                return;
+            }
+    
+            // 일정 목록 표시
+            let ul = document.createElement('ul');
+            events.forEach(event => {
+                let li = document.createElement('li');
+                li.textContent = `${event.start.dateTime ? event.start.dateTime.split('T')[1].substring(0, 5) : '종일'} - ${event.summary}`;
+                ul.appendChild(li);
+            });
+    
+            eventListDiv.appendChild(ul);
+        });
+    }
+  
 
     // 특정 날짜의 이벤트 목록을 표시하는 함수
     function showEventsForDate(dateStr, eventsData) {
