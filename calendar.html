@@ -29,7 +29,16 @@
       margin: 0 auto;
       margin-top: 20px;
     }
-    #loginBtn {
+    #loadBtn {
+    padding: 8px 16px;
+    font-size: 14px;
+    cursor: pointer;
+    background-color: #000; /* 검은색 */
+    color: #fff;           /* 흰색 */
+    font-family: "Font", sans-serif;
+    }
+
+    #visitBtn {
     padding: 8px 16px;
     font-size: 14px;
     cursor: pointer;
@@ -50,10 +59,13 @@
   </style>
 </head>
 <body>
-  <h1>Google Calendar</h1>
+  <h1>My Google-Calendar</h1>
 
-  <!-- 로그인 버튼 -->
-  <button id="loginBtn">Google Calendar 로그인</button>
+  <!-- 로드 버튼 -->
+  <button id="loadBtn">Load calendar</button>
+
+  <!-- 로드 버튼 -->
+  <button id="visitBtn">move Calendar </button>
 
   <!-- 달력이 표시될 영역 -->
   <div id="calendar"></div>
@@ -109,8 +121,8 @@
       });
 
       // 로그인 버튼에 클릭 핸들러 연결
-      const loginBtn = document.getElementById('loginBtn');
-      loginBtn.onclick = () => {
+      const loadBtn = document.getElementById('loadBtn');
+      loadBtn.onclick = () => {
         if (!gapiInited) {
           alert('Google API 로드가 안 된 상태입니다. 잠시 후 다시 시도해주세요.');
           return;
@@ -118,6 +130,12 @@
         // 사용자에게 OAuth 인증 창을 표시하여 로그인 진행
         tokenClient.requestAccessToken();
       };
+    }
+
+    const visitBtn = document.getElementById('visitBtn'); 
+    
+    visitBtn.onclick= () => {
+        window.open("https://calendar.google.com", "_blank");
     }
 
     // 5) 구글 캘린더 이벤트 불러오기 (비동기)
