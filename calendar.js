@@ -196,17 +196,34 @@ const API_KEY = 'AIzaSyCCCLytqT96rJQsmKF5i74uswlwQHm76oc';
     function showEventsForDate(dateStr, eventsData) {
       const eventListEl = document.getElementById('eventList');
       eventListEl.innerHTML = ''; // 기존 목록 초기화
-    
+  
       const filteredEvents = eventsData.filter(event => event.start.startsWith(dateStr));
-    
+  
       if (filteredEvents.length === 0) {
           eventListEl.innerHTML = '<p>이 날의 일정이 없습니다.</p>';
+          localStorage.removeItem('selected-date-events'); // 일정이 없으면 삭제
       } else {
+          const existingEvents = JSON.parse(localStorage.getItem('selected-date-events')) || [];
+          const eventList = [...existingEvents]; // 기존 저장된 일정과 병합
+  
           filteredEvents.forEach(event => {
+              const eventData = { contents: event.title, complete: false };
+  
+              // 중복 일정 방지 (이미 저장된 일정인지 확인)
+              if (!eventList.some(e => e.contents === eventData.contents)) {
+                  eventList.push(eventData);
+              }
+  
+              // 화면에도 일정 표시
               const eventItem = document.createElement('p');
               eventItem.textContent = event.title;
               eventListEl.appendChild(eventItem);
           });
+  
+          // `localStorage`에 일정 저장
+          localStorage.setItem('selected-date-events', JSON.stringify(eventList));
       }
-    }
+  }
+  
+    
     

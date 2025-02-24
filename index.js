@@ -40,10 +40,19 @@ Object.keys(pageLinks).forEach(id => {
 ///////////////////
 
 const todoInput = document.querySelector('#todoInput');
-const addBtn = document.querySelector('#addBtn'); // 추가 버튼 선택
+const addBtn = document.querySelector('#addBtn');
+const todoList = document.querySelector('#todoList');
 
-const savedTodoList =JSON.parse(localStorage.getItem('saved-items'));
-console.log(savedTodoList);
+const savedTodoList = JSON.parse(localStorage.getItem('saved-items')) || [];
+const selectedDateEvents = JSON.parse(localStorage.getItem('selected-date-events')) || [];
+
+// 저장된 데이터 리스트 추가 (중복 제거)
+const combinedList = [...new Map([...savedTodoList, ...selectedDateEvents].map(item => [item.contents, item])).values()];
+
+if (combinedList.length > 0) {
+    combinedList.forEach(todo => createTodo(todo));
+}
+
 
 if(savedTodoList){//로컬데이터가 존재하면 실행
   for(let i=0; i<savedTodoList.length; i++){
@@ -64,45 +73,45 @@ addBtn.addEventListener('click', () => { // + 버튼으로 추가
 })
 
 
+// ✅ 중복 일정 추가 방지
 function createTodo(storageData) {
   let todoContents = todoInput.value;
   if (storageData) {
-    todoContents = storageData.contents;
+      todoContents = storageData.contents;
   }
 
-  const todoList = document.querySelector('#todoList');
+  // 이미 같은 내용의 일정이 있는지 확인
+  const existingTodos = Array.from(todoList.children).map(li => li.querySelector('span').textContent);
+  if (existingTodos.includes(todoContents)) return; // 중복 방지
+
   const newLi = document.createElement('li'); 
-  const newCheckbox = document.createElement('input'); // 체크박스 생성
-  newCheckbox.type = 'checkbox'; // 체크박스 설정
+  const newCheckbox = document.createElement('input'); 
+  newCheckbox.type = 'checkbox'; 
   newCheckbox.classList.add('todo-checkbox'); 
-  const newSpan = document.createElement('span'); // 할 일 텍스트
-  const deleteAll = document.querySelector('.delete-btn-wrap');
+  const newSpan = document.createElement('span'); 
+  newSpan.textContent = todoContents;
 
-  newLi.appendChild(newCheckbox); // li 안에 체크박스 추가
-  newLi.appendChild(newSpan); // li 안에 span 추가
-
-  newSpan.textContent = todoContents; // span 안에 value값 담기
-
+  newLi.appendChild(newCheckbox);
+  newLi.appendChild(newSpan);
   todoList.appendChild(newLi);
+  todoInput.value = '';
 
-  todoInput.value = ''; // 입력 필드 초기화
-
-  // ✅ 체크박스 클릭 시 완료 표시 (complete 클래스 추가)
+  // ✅ 체크박스 완료 표시
   newCheckbox.addEventListener('change', () => {
-    newLi.classList.toggle('complete', newCheckbox.checked);
-    saveItemsFn();
+      newLi.classList.toggle('complete', newCheckbox.checked);
+      saveItemsFn();
   });
 
   // ✅ 더블 클릭 시 삭제
   newLi.addEventListener('dblclick', () => {
-    newLi.remove();
-    saveItemsFn();
+      newLi.remove();
+      saveItemsFn();
   });
 
-  // ✅ 기존 데이터가 있을 경우 체크박스 상태 유지
+  // ✅ 기존 데이터 반영 (완료 상태)
   if (storageData && storageData.complete === true) {
-    newLi.classList.add('complete');
-    newCheckbox.checked = true;
+      newLi.classList.add('complete');
+      newCheckbox.checked = true;
   }
 
   saveItemsFn();
@@ -115,21 +124,19 @@ function createTodo(storageData) {
     saveItemsFn();
   }
 
-  //로컬에 데이터 저장하기
-  function saveItemsFn(){
-    const saveItems=[];
-    for(let i=0; i<todoList.children.length; i++){
-      const todoObj ={
-        contents: todoList.children[i].querySelector('span').textContent, //리스트 목록
-        complete: todoList.children[i].classList.contains('complete')//완료 표시된 리스트
-      };
-      saveItems.push(todoObj); //배열 추가
-    }
+   // ✅ To-Do 리스트 저장 함수
+  function saveItemsFn() {
+    const saveItems = [];
+    document.querySelectorAll('#todoList li').forEach(li => {
+        saveItems.push({
+            contents: li.querySelector('span').textContent,
+            complete: li.classList.contains('complete')
+        });
+    });
 
-
-   if (saveItems.length === 0) { // 데이터가 없다면 값 삭제
-        localStorage.removeItem('saved-items')
-    }else{
+    if (saveItems.length === 0) {
+        localStorage.removeItem('saved-items');
+    } else {
         localStorage.setItem('saved-items', JSON.stringify(saveItems));
     }
   }
