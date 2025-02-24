@@ -1,3 +1,6 @@
+//3자 쿠키
+document.cookie = "myCookie=value; path=/; Secure; SameSite=None";
+
 ///////////////////
 ///   LEFTUP    ///
 ///////////////////
