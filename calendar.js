@@ -11,6 +11,7 @@ const API_KEY = 'AIzaSyCCCLytqT96rJQsmKF5i74uswlwQHm76oc';
     function gapiLoaded() {
       gapi.load('client', initGapiClient);
     }
+     
     
     // 3) gapi.client 초기화 (API Key, discoveryDocs 설정)
     async function initGapiClient() {
