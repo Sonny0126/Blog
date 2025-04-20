@@ -44,20 +44,10 @@ const addBtn = document.querySelector('#addBtn');
 const todoList = document.querySelector('#todoList');
 
 const savedTodoList = JSON.parse(localStorage.getItem('saved-items')) || [];
-const selectedDateEvents = JSON.parse(localStorage.getItem('selected-date-events')) || [];
 
-// 저장된 데이터 리스트 추가 (중복 제거)
-const combinedList = [...new Map([...savedTodoList, ...selectedDateEvents].map(item => [item.contents, item])).values()];
-
-if (combinedList.length > 0) {
-    combinedList.forEach(todo => createTodo(todo));
-}
-
-
-if(savedTodoList){//로컬데이터가 존재하면 실행
-  for(let i=0; i<savedTodoList.length; i++){
-    createTodo(savedTodoList[i]);
-  }
+// 🔁 selected-date-events 병합 없이 saved-items만 기준으로
+if (savedTodoList.length > 0) {
+  savedTodoList.forEach(todo => createTodo(todo));
 }
 
 function keyCodeCheck(event) { // 엔터키로 추가
