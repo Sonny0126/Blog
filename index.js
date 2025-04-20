@@ -121,7 +121,7 @@ function createTodo(storageData) {
   //전체 삭제버튼
   function deleteAll(){
     document.querySelectorAll('#todoList li').forEach(li => li.remove());
-    saveItemsFn();
+    localStorage.removeItem('save-items'); //확실히 삭제
   }
 
    // ✅ To-Do 리스트 저장 함수
