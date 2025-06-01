@@ -21,7 +21,7 @@ switchButton.addEventListener('click', () => {//밤일 때 전구 불 On, 낮일
 
 //객체를 만들어서 button ID를 해당 URL에 각각 매핑
 const pageLinks = {
-    button1: 'https://sonny0126.github.io/Web/',
+    button1: 'https://sonny0126.github.io/Liverpool/',
     button2: 'https://sonny0126.github.io/BitFlow/',
     button3: 'https://www.notion.so/Son-e53d58b3025f42d68700120ed5c20715',
     button4: 'https://blog.naver.com/chewypig'
