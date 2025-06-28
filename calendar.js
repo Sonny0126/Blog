@@ -1,6 +1,20 @@
 
 const CLIENT_ID = '730180124578-n6kv46c1eoi5159t1jhb6jbu5db914o3.apps.googleusercontent.com';
-const API_KEY = 'AIzaSyCCCLytqT96rJQsmKF5i74uswlwQHm76oc';                 
+let API_KEY = ''; // 전역 변수로 사용
+
+async function fetchApiKey() {
+  try {
+    const response = await fetch('/apikey');
+    const data = await response.json();
+    API_KEY = data.apiKey;
+
+    // API 키 받은 후 gapi 초기화 시작
+    gapiLoaded();
+  } catch (err) {
+    console.error('API 키 가져오기 실패:', err);
+  }
+}
+
     const SCOPES = 'https://www.googleapis.com/auth/calendar.readonly';
 
     let tokenClient;    // OAuth 토큰 클라이언트

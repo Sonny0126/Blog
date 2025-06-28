@@ -1,48 +1,89 @@
 @font-face {
-    font-family: "Font";
-    src: url("Font.ttf") format("truetype");
-  }
-  
-  body {
-  margin: 20px;
-  }
-  #calendar {
-  max-width: 900px;
+  font-family: "Font";
+  src: url("Font.ttf") format("truetype");
+}
+
+body {
+  margin: 0;
+  padding: 20px;
+  background-color: #f4f4f4;
+  font-family: "Font", sans-serif;
+  line-height: 1.6;
+  color: #333;
+}
+
+h1#theme {
+  text-align: center;
+  font-size: 2.4em;
+  margin-bottom: 40px;
+  color: #222;
+  cursor: pointer;
+  transition: color 0.3s;
+}
+
+h1#theme:hover {
+  color: #555;
+}
+
+button {
+  padding: 12px 24px;
+  font-size: 16px;
+  cursor: pointer;
+  background-color: #111;
+  color: #fff;
+  border: none;
+  border-radius: 8px;
+  font-family: "Font", sans-serif;
+  transition: all 0.3s ease;
+  margin: 10px 10px 0 0;
+  box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+}
+
+button:hover {
+  background-color: #444;
+  transform: translateY(-2px);
+}
+
+#calendar {
+  max-width: 960px;
   margin: 0 auto;
-  margin-top: 20px;
-  }
-  #loadBtn {
-  padding: 8px 16px;
-  font-size: 14px;
-  cursor: pointer;
-  background-color: #000; /* 검은색 */
-  color: #fff;           /* 흰색 */
+  background-color: #fff;
+  padding: 30px;
+  border-radius: 12px;
+  box-shadow: 0 8px 24px rgba(0, 0, 0, 0.1);
+}
+
+#eventList {
+  max-width: 960px;
+  margin: 40px auto 0;
+  padding: 24px;
+  background-color: #1a1a1a;
+  color: #f9f9f9;
+  border-radius: 12px;
+  font-size: 15px;
   font-family: "Font", sans-serif;
-  }
-  
-  #visitBtn {
-  padding: 8px 16px;
-  font-size: 14px;
-  cursor: pointer;
-  background-color: #000; /* 검은색 */
-  color: #fff;           /* 흰색 */
-  font-family: "Font", sans-serif;
-  }
-  
-  #eventList{
-    padding: 8px 16px;
-    font-size: 14px;
-    background-color: #000; /* 검은색 */
-    color: #fff;           /* 흰색 */
-    font-family: "Font", sans-serif;
-  }
-  
-  h1{
-    font-family: "Font", sans-serif;
-    cursor: pointer;
-  }
-  
-  /* FullCalendar 전체에 폰트 적용 */
-  .fc {
+  box-shadow: 0 4px 12px rgba(0, 0, 0, 0.2);
+}
+
+#eventList h3 {
+  margin-top: 0;
+  font-size: 20px;
+  color: #f1f1f1;
+  border-bottom: 1px solid #444;
+  padding-bottom: 10px;
+  margin-bottom: 15px;
+}
+
+#eventList ul {
+  padding-left: 20px;
+}
+
+#eventList li {
+  margin-bottom: 8px;
+  list-style-type: disc;
+}
+
+/* FullCalendar 내 폰트 적용 */
+.fc {
   font-family: "Font", sans-serif !important;
-  }
+}
