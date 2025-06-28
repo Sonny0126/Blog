@@ -1,82 +1,54 @@
-/* =========================
-    전체 컨테이너 스타일
-=========================== */
-
 @font-face {
-    font-family: 'Font'; 
-    src: url('Font.ttf') format('truetype'); /* Font.ttf 참조, 위치에 맞게 수정 */
+    font-family: 'Font';
+    src: url('Font.ttf') format('truetype');
 }
 
 body {
-    background-color: #FAF3F0; /* 부드러운 배경색 */
-    background-image: url('image/Night.png');
-    background-size: cover;
-    background-repeat: no-repeat;
-    background-position: center center; 
     margin: 0;
     padding: 0;
-    font-family: 'Font', sans-serif; /* 'Font'로 수정 */
+    height: 100vh;
+    background: url('your-background.png') no-repeat center center fixed;
+    background-size: cover;
+    display: flex;
+    justify-content: center;
+    align-items: center;
 }
 
 .container {
     display: flex;
-    justify-content: space-evenly;
+    justify-content: space-between; /* 좌우 정렬 */
     align-items: flex-start;
-    width: 80%;
-    margin: 20px auto;
-    gap: 20px;
-    font-family: 'Font', sans-serif; /* 'Font'로 수정 */
+    width: 100%;
+    max-width: 1400px; /* 필요 시 설정 */
+    padding: 30px;
+    box-sizing: border-box;
+    gap: 600px;
 }
 
-/* =========================
-    왼쪽 부분 스타일
-=========================== */
 
-.left-container {
-    text-align: center;
-    margin-top: 20px;
-}
-
-.leftup {
-    width: 60%;
-    background: #ffffff;
-    padding: 20px;
+.card {
+    background: rgba(20, 20, 30, 0.7);
+    border: 1px solid rgba(255, 255, 255, 0.1);
     border-radius: 15px;
-    text-align: center;
-    box-shadow: 0 4px 10px rgba(0, 0, 0, 0.1);
+    box-shadow: 0 8px 20px rgba(0, 0, 0, 0.3);
+    backdrop-filter: blur(8px);
 }
 
-.leftup h1 {
+/* 좌측 컨테이너 */
+.left-container {
+    flex: 0 0 250px;
+    background: rgba(0, 0, 0, 0.5);
+    border-radius: 20px;
+    padding: 20px;
+    color: white;
+}
+
+.profile-section h1 {
     font-size: 1.8em;
-    font-weight: bold;
-    color: #2c3e50;
+    text-align: center;
     margin-bottom: 20px;
 }
 
-.leftup button {
-    display: block;
-    width: 100%;
-    padding: 12px;
-    margin: 10px 0;
-    font-size: 1em;
-    background: #000000;
-    color: white;
-    border: none;
-    border-radius: 25px; /* 둥근 버튼 */
-    cursor: pointer;
-    transition: background 0.3s ease-in-out;
-    font-family: 'Font', sans-serif; /* 'Font'로 수정 */
-}
-
-#calendar-img{
-    width: 30%;
-}
-
-.leftup button:hover {
-    background: #e74c3c;
-}
-
-/* 밤낮 조절 버튼 */
 .OnOff {
     display: flex;
     flex-direction: column;
@@ -84,264 +56,238 @@ body {
     margin-bottom: 20px;
 }
 
-.OnOff h1 {
-    font-size: 1.5em;
-    margin-bottom: 10px;
-}
-
 #switch {
     border: none;
     background: none;
     cursor: pointer;
+    display: flex;
+    justify-content: center;
+    align-items: center;
 }
 
 #switch-img {
     width: 50px;
     height: 50px;
+    filter: drop-shadow(0 0 5px #fff);
 }
 
-/* =========================
-      오른쪽 부분
-=========================== */
+.menu-section button {
+    width: 100%;
+    padding: 12px;
+    margin: 10px 0;
+    font-size: 1em;
+    background: transparent;
+    color: #f0f0f0;
+    border: 1px solid #888;
+    border-radius: 20px;
+    cursor: pointer;
+    transition: 0.3s;
+}
 
+.menu-section button:hover {
+    background: rgba(255, 255, 255, 0.1);
+    border-color: #fff;
+    color: #fff;
+    box-shadow: 0 0 10px #fff;
+}
+
+#calendar-img {
+    width: 30%;
+    filter: drop-shadow(0 0 5px #fff);
+}
+
+/* 우측 컨테이너 */
 .right-container {
+    flex: 0 0 600px; /* 고정 너비 또는 flex-grow 사용 가능 */
     display: flex;
-    flex-direction: row; /* 요소를 가로 배치 */
-    align-items: flex-start; /* 상단 정렬 */
-    justify-content: space-between; /* 양쪽 정렬 */
-    width: 100%;
-    margin: 0 auto; /* 가운데 정렬 */
-    gap: 20px; /* 간격 조정 */
-    font-family: 'Font', sans-serif; /* 'Font'로 수정 */
+    flex-direction: column;
+    gap: 20px;
+    align-items: center;
+    margin-left: auto;
+    background: transparent;
 }
 
-/* 뮤직 플레이어 (왼쪽) */
-.music {
-    flex: 2; /* 크기 비율 */
-    position: relative;
+.music,
+.todo-list {
+    margin: 0 auto;
     width: 100%;
-    max-width: 800px;
-    height: 430px;
-    background: #ffffff;
-    border-radius: 15px;
+    max-width: 400px;
+    padding: 20px;
     display: flex;
-    margin-top: 20px;
     flex-direction: column;
     align-items: center;
-    justify-content: center;
-    padding: 15px;
-    box-sizing: border-box;
 }
 
-/* 유튜브 플레이어 크기 조정 */
+.music {
+    height: 350px;
+    justify-content: center;
+}
+
 #youtubePlayer {
     width: 100%;
     height: 100%;
     border-radius: 10px;
 }
 
-/* 플레이 버튼 */
+.song-title {
+    margin-top: 10px;
+    font-size: 1.2em;
+}
+
 #Btnimage {
     width: 60px;
     cursor: pointer;
+    margin-top: 10px;
+    filter: brightness(1.2) drop-shadow(0 0 5px #fff);
+    transition: transform 0.2s;
 }
 
-/* 투두 리스트 스타일 */
-
-/* =========================
-    투두 리스트 스타일
-=========================== */
-.todo-list {
-    width: 30%;
-    margin-top: 20px;
-    background-color: #FFE8AD;
-    border-radius: 15px;
-    text-align: center;
-    padding: 20px;
-    font-family: 'Font', sans-serif; /* Font 적용 */
+#Btnimage:hover {
+    transform: scale(1.1);
 }
 
 .todo-list h1 {
-    font-family: 'Font', sans-serif; /* Font 적용 */
+    margin-bottom: 15px;
 }
 
-/* 입력 필드 스타일 */
 #inputField {
     display: flex;
     align-items: center;
-    justify-content: center;
+    gap: 10px;
     margin-bottom: 10px;
+    width: 100%;
 }
 
 #todoInput {
-    width: 80%;
+    flex: 1;
     border: none;
     border-radius: 20px;
     padding: 10px;
     font-size: 16px;
     outline: none;
+    background: rgba(255, 255, 255, 0.1);
+    color: #fff;
 }
 
-/* 추가 버튼 스타일 */
+#todoInput::placeholder {
+    color: #ccc;
+}
+
 #addBtn {
     width: 40px;
     height: 40px;
-    background: #2c3e50;
-    border: none;
+    background: rgba(255, 255, 255, 0.1);
+    border: 1px solid #ccc;
     border-radius: 50%;
     cursor: pointer;
-    position: relative; /* 가상 요소 배치를 위해 필요 */
-    display: flex;
-    align-items: center;
-    justify-content: center;
+    position: relative;
+    transition: 0.3s;
 }
 
-/* "+" 모양의 가로 바 */
-#addBtn::before {
-    content: "";
-    position: absolute;
-    width: 50%;  /* 버튼 크기의 절반 */
-    height: 3px;  /* 두께 */
-    background-color: white;  /* "+" 색상 */
-    top: 50%;
-    left: 50%;
-    transform: translate(-50%, -50%);
-}
-
-/* "+" 모양의 세로 바 */
+#addBtn::before,
 #addBtn::after {
     content: "";
     position: absolute;
-    width: 3px;  /* 두께 */
-    height: 50%;  /* 버튼 크기의 절반 */
-    background-color: white;  /* "+" 색상 */
-    top: 50%;
-    left: 50%;
-    transform: translate(-50%, -50%);
+    background-color: #fff;
 }
 
-
-/* "+" 모양의 가로 바 */
 #addBtn::before {
-    content: "";
-    position: absolute;
-    width: 50%;  /* 버튼 크기의 절반 */
-    height: 3px;  /* 두께 */
-    background-color: white;  /* "+" 색상 */
+    width: 50%;
+    height: 3px;
     top: 50%;
     left: 50%;
     transform: translate(-50%, -50%);
 }
 
-#addBtn span {
-    display: block;
-    width: 2px;
-    height: 15px;
-    background-color: white;
-    position: absolute;
-    transform: translate(-50%,-50%);
+#addBtn::after {
+    width: 3px;
+    height: 50%;
     top: 50%;
     left: 50%;
+    transform: translate(-50%, -50%);
 }
 
-#addBtn span:last-child {
-    transform: translate(-50%,-50%) rotate(-90deg);
+#addBtn:hover {
+    background: rgba(255, 255, 255, 0.2);
+    box-shadow: 0 0 10px #fff;
 }
 
-/* 할 일 목록 스타일 */
 #todoList {
     list-style: none;
     padding: 0;
+    width: 100%;
 }
 
 #todoList li {
     padding: 12px;
-    background: white;
+    background: rgba(255, 255, 255, 0.1);
     border-radius: 5px;
     margin: 5px 0;
     display: flex;
-    align-items: center;
     justify-content: space-between;
+    transition: 0.3s;
+}
+
+#todoList li:hover {
+    background: rgba(255, 255, 255, 0.2);
 }
 
 #todoList li.complete {
     text-decoration: line-through;
-    color: gray;
+    color: #888;
 }
 
-/* 전체 삭제 버튼 */
 .delete-btn-wrap button {
     width: 100%;
     padding: 10px;
     border: none;
     border-radius: 5px;
-    background-color: #e74c3c;
+    background: rgba(231, 76, 60, 0.8);
     color: white;
     cursor: pointer;
-    transition: background 0.3s;
+    transition: 0.3s;
 }
 
 .delete-btn-wrap button:hover {
-    background-color: #c0392b;
+    background: rgba(231, 76, 60, 1);
+    box-shadow: 0 0 10px #e74c3c;
 }
 
-/* =========================
-    반응형 디자인 (모바일 & 태블릿)
-=========================== */
+/* 반응형 */
 @media (max-width: 1024px) {
-    .container {
-        flex-direction: column;
+    .right-container {
         align-items: center;
     }
 
-    .left-container, .right-container {
+    .music,
+    .todo-list {
         width: 90%;
-        margin-bottom: 20px;
-    }
-
-    .music {
-        width: 95%;
     }
 }
 
 @media (max-width: 768px) {
-    .left-container, .right-container {
-        width: 100%;
-    }
-
-    .music {
-        width: 100%;
-    }
-
     #Btnimage {
         width: 12%;
     }
 
-    .days {
-        gap: 2px;
+    #todoInput {
+        width: 70%;
     }
 }
 
 @media (max-width: 480px) {
-    body {
-        background-size: cover;
-    }
-
     .container {
         width: 95%;
         flex-direction: column;
         align-items: center;
-    }
-
-    .music {
-        width: 100%;
     }
 
     #youtubePlayer {
         aspect-ratio: 16 / 9;
     }
 
-    .leftup button {
+    .menu-section button,
+    .delete-btn-wrap button {
         font-size: 0.9em;
         padding: 10px;
     }

@@ -10,14 +10,17 @@ const switchImg = document.getElementById('switch-img');//switch-img를 수정�
 const body = document.body;
 
 window.onload = () => { //이미지가 완전히 로드된 이후에 내부에 배경을 깔고, 켈린더 표시
-    body.style.backgroundImage = "url('image/Night.png')";
+    body.style.backgroundImage = "url('image/Day.png')";
 };
 
-switchButton.addEventListener('click', () => {//밤일 때 전구 불 On, 낮일 때 전구 불 Off
+switchButton.addEventListener('click', () => {
     const isNight = switchImg.getAttribute('src') === 'image/off.png';
-    body.style.backgroundImage = isNight ? "url('image/Night.png')" : "url('image/Day.png')";
+    
+    // 상태 전환
+    body.style.backgroundImage = isNight ? "url('image/Day.png')" : "url('image/Night.png')";
     switchImg.setAttribute('src', isNight ? 'image/on.png' : 'image/off.png');
 });
+
 
 //객체를 만들어서 button ID를 해당 URL에 각각 매핑
 const pageLinks = {

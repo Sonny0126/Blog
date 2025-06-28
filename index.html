@@ -3,45 +3,41 @@
 <head>
     <meta charset="utf-8">
     <title>Dashboard</title>
-    <link rel="stylesheet" href="index.css?v=2">
+    <link rel="stylesheet" href="index.css?v=3">
 </head>
 <body>
     <div class="container">
-        <!-- 전체 영역 -->
-        <div class="left-container">
-            <!-- 왼쪽 영역 -->
-            <div class="leftup">
-                <div class="OnOff">
-                    <h1>손 승 민</h1>
-                    <button id="switch">
-                        <img id="switch-img" src="image/on.png" alt="스위치">
-                    </button>
-                </div>
-                <div class="button-group">
-                    <button id="button1">Liverpool</button>
-                    <button id="button3">Notion</button>
-                    <button id="button4">Naver-Blog</button>
-                    <button onclick="window.open('calendar.html', '_blank')">
-                        <img id="calendar-img" src="image/calendar.png" alt = 켈린더>
-                    </button>
 
-                </div>
-                
+        <!-- 왼쪽 영역 -->
+        <div class="left-container card">
+            <div class="OnOff">
+                <h1>손 승 민</h1>
+                <button id="switch">
+                    <img id="switch-img" src="image/on.png" alt="스위치">
+                </button>
+            </div>
+            <div class="menu-section">
+                <button id="button1">Liverpool</button>
+                <button id="button3">Notion</button>
+                <button id="button4">Naver-Blog</button>
+                <button onclick="window.open('calendar.html', '_blank')">
+                    <img id="calendar-img" src="image/calendar.png" alt="캘린더">
+                </button>
             </div>
         </div>
 
-        <!-- 하단 영역 -->
+        <!-- 오른쪽 영역 -->
         <div class="right-container">
 
-            <!-- 뮤직 플레이어 -->
-            <div class="music">
-                <div id="youtubePlayer"></div> <!-- 유튜브 플레이어 자리 -->
+            <!-- Music Player (상단) -->
+            <div class="music card">
+                <div id="youtubePlayer"></div>
                 <div class="song-title">Music Player</div>
                 <img id="Btnimage" src="image/play.png" alt="Play Button">
             </div>
 
-            <!-- 투두 리스트 -->
-            <div class="todo-list">
+            <!-- Todo List (아래 중앙) -->
+            <div class="todo-list card">
                 <h1>오늘 할 일</h1>
                 <div id="inputField">
                     <input type="text" id="todoInput" placeholder="할 일 추가하기" onkeydown="keyCodeCheck(event)">
@@ -55,8 +51,9 @@
                     <button onclick="deleteAll();">전체 삭제</button>
                 </div>
             </div>
-                
+
         </div>
+
     </div>
 
     <script src="index.js"></script>
