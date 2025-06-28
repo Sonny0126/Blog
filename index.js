@@ -154,3 +154,21 @@ window.onYouTubeIframeAPIReady = function () {
         }
     });
 }
+
+// 재생/정지 버튼 처리
+document.addEventListener('DOMContentLoaded', () => {
+  document.getElementById('Btnimage').addEventListener('click', () => {
+      const buttonImage = document.getElementById('Btnimage');
+
+      if (player.getPlayerState() !== 1) { // 재생 중이 아니면 실행
+          player.playVideo();
+          buttonImage.src = "image/pause.png"; // 재생 버튼을 일시 정지 버튼으로 변경
+      } else { // 이미 재생 중이면 멈춤
+          player.pauseVideo();
+          buttonImage.src = "image/play.png"; // 일시 정지 버튼을 재생 버튼으로 변경
+      }
+  });
+
+  // 유튜브 API 스크립트 로드
+  loadYouTubeAPI();
+});
